@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO<br><span style="font-size: 0.75em; font-weight: 500; opacity: 0.8;">REGENCY</span></span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="warga.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Warga</span>
+                </a>
+                <a href="kk.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Kartu Keluarga</span>
+                </a>
+                <a href="requests.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">⏳</span>
+                    <span>Request Anggota</span>
+                </a>
+                <div style="margin: var(--space-4) var(--space-6); padding-top: var(--space-4); border-top: 1px solid rgba(255,255,255,0.05);">
+                    <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate-500); font-weight: 600;">Komunikasi</span>
+                </div>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <div style="margin: var(--space-4) var(--space-6); padding-top: var(--space-4); border-top: 1px solid rgba(255,255,255,0.05);">
+                    <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate-500); font-weight: 600;">Layanan</span>
+                </div>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Kas & Iuran</span>
+                </a>
+                <a href="kegiatan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📅</span>
+                    <span>Kegiatan</span>
+                </a>
+                <a href="laporan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📈</span>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="userAvatar">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userName">Admin RT 001</div>
+                    <div class="sidebar-user-role" id="userRole">Administrator</div>
+                </div>
+                <button onclick="logout()" class="btn btn-ghost btn-icon" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <div>
+                        <h1 class="page-title">Dashboard</h1>
+                        <p class="card-subtitle">Selamat datang di sistem manajemen RT/RW Digital</p>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <button class="notification-btn" onclick="window.location.href='notifikasi.html'">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Stats Cards -->
+                <div class="dashboard-stats fade-in-up">
+                    <div class="stat-card">
+                        <div class="stat-card-icon blue">👥</div>
+                        <div class="stat-card-content">
+                            <h3 id="totalWarga">150</h3>
+                            <p>Total Warga</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon green">🏠</div>
+                        <div class="stat-card-content">
+                            <h3 id="totalKK">50</h3>
+                            <p>Kepala Keluarga</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon orange">📢</div>
+                        <div class="stat-card-content">
+                            <h3 id="totalPengumuman">12</h3>
+                            <p>Pengumuman</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon red">💰</div>
+                        <div class="stat-card-content">
+                            <h3 id="totalIuran">Rp 2.5jt</h3>
+                            <p>Kas Bulan Ini</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities & Announcements -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-6);" class="fade-in-up">
+                    <!-- Recent Announcements -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Pengumuman Terbaru</h3>
+                                <p class="card-subtitle">Informasi terkini untuk warga</p>
+                            </div>
+                            <a href="pengumuman.html" class="btn btn-sm btn-outline">Lihat Semua</a>
+                        </div>
+                        <div class="card-body">
+                            <ul class="activity-list" id="recentAnnouncements">
+                                <li class="activity-item">
+                                    <div class="activity-icon blue">📢</div>
+                                    <div class="activity-content">
+                                        <h4>Kerja Bakti Minggu Ini</h4>
+                                        <p>Kerja bakti membersihkan selokan akan dilaksanakan hari Minggu...</p>
+                                        <span class="activity-time">2 jam yang lalu</span>
+                                    </div>
+                                </li>
+                                <li class="activity-item">
+                                    <div class="activity-icon green">💰</div>
+                                    <div class="activity-content">
+                                        <h4>Pembayaran Iuran Bulan Ini</h4>
+                                        <p>Diharapkan kepada seluruh warga untuk membayar iuran...</p>
+                                        <span class="activity-time">1 hari yang lalu</span>
+                                    </div>
+                                </li>
+                                <li class="activity-item">
+                                    <div class="activity-icon orange">📅</div>
+                                    <div class="activity-content">
+                                        <h4>Rapat RT Bulanan</h4>
+                                        <p>Rapat bulanan akan diadakan di balai warga...</p>
+                                        <span class="activity-time">3 hari yang lalu</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Aksi Cepat</h3>
+                                <p class="card-subtitle">Akses cepat fitur</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                                <a href="warga.html" class="btn btn-primary">➕ Tambah Warga</a>
+                                <a href="pengumuman.html" class="btn btn-secondary">📢 Buat Pengumuman</a>
+                                <a href="layanan.html" class="btn btn-outline">📋 Ajukan Surat</a>
+                                <a href="iuran.html" class="btn btn-outline">💰 Catat Iuran</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Require authentication for admin/staff only
+        requireAuth([USER_ROLES.ADMIN, USER_ROLES.RT, USER_ROLES.RW]);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUIForRole();
+        });
+
+        // Logout function
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                auth.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+
+        // Toggle sidebar for mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // Prevent body scroll when sidebar is open on mobile
+            if (window.innerWidth <= 1024) {
+                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+            }
+        }
+
+        // Menu toggle click handler
+        document.getElementById('menuToggle')?.addEventListener('click', toggleSidebar);
+
+        // Close sidebar when clicking on a menu item (mobile)
+        document.querySelectorAll('.sidebar-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        // Handle window resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 1024) {
+                    document.getElementById('sidebar')?.classList.remove('active');
+                    document.getElementById('sidebarOverlay')?.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }, 250);
+        });
+    </script>
+</body>
+</html>

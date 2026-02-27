@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifikasi - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="warga.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Warga</span>
+                </a>
+                <a href="kk.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Kartu Keluarga</span>
+                </a>
+                <a href="requests.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">⏳</span>
+                    <span>Request Anggota</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Kas & Iuran</span>
+                </a>
+                <a href="kegiatan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📅</span>
+                    <span>Kegiatan</span>
+                </a>
+                <a href="laporan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📈</span>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Admin RT 001</div>
+                    <div class="sidebar-user-role">Administrator</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Notifikasi</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-sm btn-outline" onclick="markAllAsRead()">✓ Tandai Semua Dibaca</button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Semua Notifikasi</h3>
+                        <div style="display: flex; gap: 12px;">
+                            <select class="form-control" style="width: 150px;">
+                                <option value="">Semua</option>
+                                <option value="unread">Belum Dibaca</option>
+                                <option value="read">Sudah Dibaca</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <ul class="activity-list" style="margin: 0;">
+                            <!-- Notification 1 -->
+                            <li class="activity-item" style="background: rgba(37, 99, 235, 0.05);">
+                                <div class="activity-icon blue">📢</div>
+                                <div class="activity-content">
+                                    <h4>Pengumuman Baru: Kerja Bakti Minggu Ini</h4>
+                                    <p>Admin RT 001 baru saja memposting pengumuman tentang kerja bakti...</p>
+                                    <span class="activity-time">2 menit yang lalu</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="badge badge-info">Baru</span>
+                                    <button class="btn btn-sm btn-outline" onclick="this.closest('.activity-item').style.background='none'; this.previousElementSibling.remove();">✓</button>
+                                </div>
+                            </li>
+
+                            <!-- Notification 2 -->
+                            <li class="activity-item" style="background: rgba(16, 185, 129, 0.05);">
+                                <div class="activity-icon green">💰</div>
+                                <div class="activity-content">
+                                    <h4>Pembayaran Iuran Diterima</h4>
+                                    <p>Budi Pratama telah membayar iuran kebersihan bulan Februari sebesar Rp 50.000</p>
+                                    <span class="activity-time">1 jam yang lalu</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="badge badge-success">Baru</span>
+                                    <button class="btn btn-sm btn-outline" onclick="this.closest('.activity-item').style.background='none'; this.previousElementSibling.remove();">✓</button>
+                                </div>
+                            </li>
+
+                            <!-- Notification 3 -->
+                            <li class="activity-item" style="background: rgba(245, 158, 11, 0.05);">
+                                <div class="activity-icon orange">📋</div>
+                                <div class="activity-content">
+                                    <h4>Pengajuan Surat Keterangan Domisili</h4>
+                                    <p>Citra Dewi mengajukan surat keterangan domisili baru. Segera proses...</p>
+                                    <span class="activity-time">3 jam yang lalu</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="badge badge-warning">Baru</span>
+                                    <button class="btn btn-sm btn-outline" onclick="this.closest('.activity-item').style.background='none'; this.previousElementSibling.remove();">✓</button>
+                                </div>
+                            </li>
+
+                            <!-- Notification 4 -->
+                            <li class="activity-item" style="background: rgba(239, 68, 68, 0.05);">
+                                <div class="activity-icon red">⚠️</div>
+                                <div class="activity-content">
+                                    <h4>Laporan Keamanan: Pencurian</h4>
+                                    <p>Warga melaporkan kejadian pencurian motor di blok C malam tadi...</p>
+                                    <span class="activity-time">5 jam yang lalu</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="badge badge-danger">Baru</span>
+                                    <button class="btn btn-sm btn-outline" onclick="this.closest('.activity-item').style.background='none'; this.previousElementSibling.remove();">✓</button>
+                                </div>
+                            </li>
+
+                            <!-- Notification 5 -->
+                            <li class="activity-item">
+                                <div class="activity-icon blue">📅</div>
+                                <div class="activity-content">
+                                    <h4>Reminder: Rapat RT Besok</h4>
+                                    <p>Jangan lupa rapat bulanan besok malam di rumah Pak RT</p>
+                                    <span class="activity-time">1 hari yang lalu</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <button class="btn btn-sm btn-outline" onclick="this.closest('.activity-item').style.background='none'; this.previousElementSibling.remove();">✓</button>
+                                </div>
+                            </li>
+
+                            <!-- Notification 6 -->
+                            <li class="activity-item">
+                                <div class="activity-icon green">👥</div>
+                                <div class="activity-content">
+                                    <h4>Warga Baru Terdaftar</h4>
+                                    <p>Eka Putri telah mendaftar sebagai warga baru di RT 004/RW 002</p>
+                                    <span class="activity-time">2 hari yang lalu</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <button class="btn btn-sm btn-outline" onclick="this.closest('.activity-item').style.background='none'; this.previousElementSibling.remove();">✓</button>
+                                </div>
+                            </li>
+
+                            <!-- Notification 7 -->
+                            <li class="activity-item">
+                                <div class="activity-icon blue">📢</div>
+                                <div class="activity-content">
+                                    <h4>Pengumuman: Jadwal Posyandu</h4>
+                                    <p>Posyandu balita dan lansia akan diadakan minggu depan...</p>
+                                    <span class="activity-time">3 hari yang lalu</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <button class="btn btn-sm btn-outline" onclick="this.closest('.activity-item').style.background='none'; this.previousElementSibling.remove();">✓</button>
+                                </div>
+                            </li>
+
+                            <!-- Notification 8 -->
+                            <li class="activity-item">
+                                <div class="activity-icon orange">🔧</div>
+                                <div class="activity-content">
+                                    <h4>Laporan Perbaikan: Lampu Jalan</h4>
+                                    <p>Lampu jalan di blok A telah diperbaiki oleh petugas</p>
+                                    <span class="activity-time">5 hari yang lalu</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <button class="btn btn-sm btn-outline" onclick="this.closest('.activity-item').style.background='none'; this.previousElementSibling.remove();">✓</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                auth.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

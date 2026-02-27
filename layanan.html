@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layanan Surat - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="warga.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Warga</span>
+                </a>
+                <a href="kk.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Kartu Keluarga</span>
+                </a>
+                <a href="requests.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">⏳</span>
+                    <span>Request Anggota</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Kas & Iuran</span>
+                </a>
+                <a href="kegiatan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📅</span>
+                    <span>Kegiatan</span>
+                </a>
+                <a href="laporan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📈</span>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Admin RT 001</div>
+                    <div class="sidebar-user-role">Administrator</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Layanan Surat</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="notification-btn" onclick="window.location.href='notifikasi.html'">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Service Types -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-card-icon blue">📝</div>
+                        <div class="stat-card-content">
+                            <h3 id="totalPermohonan">24</h3>
+                            <p>Total Permohonan</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon green">✓</div>
+                        <div class="stat-card-content">
+                            <h3 id="totalSelesai">18</h3>
+                            <p>Selesai</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon orange">⏳</div>
+                        <div class="stat-card-content">
+                            <h3 id="totalProses">4</h3>
+                            <p>Diproses</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon red">⏸️</div>
+                        <div class="stat-card-content">
+                            <h3 id="totalPending">2</h3>
+                            <p>Menunggu</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Cards -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-bottom: 32px;">
+                    <!-- Service Type 1 -->
+                    <div class="card" style="cursor: pointer;" onclick="openModal('requestSuratModal')">
+                        <div class="card-body" style="text-align: center; padding: 32px;">
+                            <div style="width: 70px; height: 70px; background: rgba(37, 99, 235, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px;">📄</div>
+                            <h3 style="margin-bottom: 8px;">Surat Keterangan Domisili</h3>
+                            <p style="color: var(--gray-600); font-size: 0.9rem;">Untuk keperluan administrasi dan pembuatan KTP</p>
+                        </div>
+                    </div>
+
+                    <!-- Service Type 2 -->
+                    <div class="card" style="cursor: pointer;" onclick="openModal('requestSuratModal')">
+                        <div class="card-body" style="text-align: center; padding: 32px;">
+                            <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px;">🆔</div>
+                            <h3 style="margin-bottom: 8px;">Surat Pengantar KTP</h3>
+                            <p style="color: var(--gray-600); font-size: 0.9rem;">Untuk pembuatan atau perpanjangan KTP</p>
+                        </div>
+                    </div>
+
+                    <!-- Service Type 3 -->
+                    <div class="card" style="cursor: pointer;" onclick="openModal('requestSuratModal')">
+                        <div class="card-body" style="text-align: center; padding: 32px;">
+                            <div style="width: 70px; height: 70px; background: rgba(245, 158, 11, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px;">👶</div>
+                            <h3 style="margin-bottom: 8px;">Surat Keterangan Kelahiran</h3>
+                            <p style="color: var(--gray-600); font-size: 0.9rem;">Untuk pendaftaran akta kelahiran</p>
+                        </div>
+                    </div>
+
+                    <!-- Service Type 4 -->
+                    <div class="card" style="cursor: pointer;" onclick="openModal('requestSuratModal')">
+                        <div class="card-body" style="text-align: center; padding: 32px;">
+                            <div style="width: 70px; height: 70px; background: rgba(239, 68, 68, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px;">⚰️</div>
+                            <h3 style="margin-bottom: 8px;">Surat Keterangan Kematian</h3>
+                            <p style="color: var(--gray-600); font-size: 0.9rem;">Untuk keperluan administrasi kematian</p>
+                        </div>
+                    </div>
+
+                    <!-- Service Type 5 -->
+                    <div class="card" style="cursor: pointer;" onclick="openModal('requestSuratModal')">
+                        <div class="card-body" style="text-align: center; padding: 32px;">
+                            <div style="width: 70px; height: 70px; background: rgba(139, 92, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px;">💍</div>
+                            <h3 style="margin-bottom: 8px;">Surat Pengantar Nikah</h3>
+                            <p style="color: var(--gray-600); font-size: 0.9rem;">Untuk pendaftaran pernikahan di KUA</p>
+                        </div>
+                    </div>
+
+                    <!-- Service Type 6 -->
+                    <div class="card" style="cursor: pointer;" onclick="openModal('requestSuratModal')">
+                        <div class="card-body" style="text-align: center; padding: 32px;">
+                            <div style="width: 70px; height: 70px; background: rgba(236, 72, 153, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px;">📦</div>
+                            <h3 style="margin-bottom: 8px;">Surat Keterangan Usaha</h3>
+                            <p style="color: var(--gray-600); font-size: 0.9rem;">Untuk keperluan perizinan usaha</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Requests Table -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="card-title">Permohonan Terbaru</h3>
+                        <a href="#" class="btn btn-sm btn-outline">Lihat Semua</a>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Pemohon</th>
+                                <th>Jenis Surat</th>
+                                <th>Tanggal</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">A</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Ahmad Santoso</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">A-12</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Surat Keterangan Domisili</td>
+                                <td>15 Feb 2025</td>
+                                <td><span class="badge badge-success">Selesai</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('detailSuratModal')">👁️</button>
+                                    <button class="btn btn-sm btn-primary">📥 Download</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--secondary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">B</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Budi Pratama</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">A-15</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Surat Pengantar KTP</td>
+                                <td>14 Feb 2025</td>
+                                <td><span class="badge badge-warning">Diproses</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('detailSuratModal')">👁️</button>
+                                    <button class="btn btn-sm btn-outline">✏️ Edit</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">C</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Citra Dewi</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">B-08</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Surat Keterangan Domisili</td>
+                                <td>13 Feb 2025</td>
+                                <td><span class="badge badge-info">Menunggu</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('detailSuratModal')">👁️</button>
+                                    <button class="btn btn-sm btn-success">✓ Approve</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--danger-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">D</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Dedi Kurniawan</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">C-22</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Surat Keterangan Usaha</td>
+                                <td>12 Feb 2025</td>
+                                <td><span class="badge badge-danger">Ditolak</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('detailSuratModal')">👁️</button>
+                                    <button class="btn btn-sm btn-outline">📝 Catatan</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Request Surat Modal -->
+    <div class="modal-overlay" id="requestSuratModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Ajukan Permohonan Surat</h3>
+                <button class="modal-close" onclick="closeModal('requestSuratModal')">&times;</button>
+            </div>
+            <form id="requestSuratForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Jenis Surat</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih Jenis Surat</option>
+                            <option value="domisili">Surat Keterangan Domisili</option>
+                            <option value="ktp">Surat Pengantar KTP</option>
+                            <option value="kelahiran">Surat Keterangan Kelahiran</option>
+                            <option value="kematian">Surat Keterangan Kematian</option>
+                            <option value="nikah">Surat Pengantar Nikah</option>
+                            <option value="usaha">Surat Keterangan Usaha</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Keperluan</label>
+                        <textarea class="form-control" rows="3" placeholder="Jelaskan keperluan surat ini..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload Dokumen Pendukung (Opsional)</label>
+                        <input type="file" class="form-control" multiple>
+                        <small style="color: var(--gray-500); font-size: 0.85rem;">Format: PDF, JPG, PNG. Max 5MB</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Catatan Tambahan</label>
+                        <textarea class="form-control" rows="2" placeholder="Catatan tambahan (opsional)"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('requestSuratModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Ajukan Permohonan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Detail Surat Modal -->
+    <div class="modal-overlay" id="detailSuratModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Detail Permohonan Surat</h3>
+                <button class="modal-close" onclick="closeModal('detailSuratModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                    <div>
+                        <h4 style="font-size: 1.1rem; margin-bottom: 4px;">Surat Keterangan Domisili</h4>
+                        <span class="badge badge-success">Selesai</span>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">No. Surat</div>
+                        <div style="font-weight: 600;">001/SKD/RT001/II/2025</div>
+                    </div>
+                </div>
+                <div style="background: var(--gray-100); padding: 16px; border-radius: var(--radius); margin-bottom: 20px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">Pemohon</div>
+                            <div style="font-weight: 500;">Ahmad Santoso</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">No. Rumah</div>
+                            <div style="font-weight: 500;">A-12</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">RT/RW</div>
+                            <div style="font-weight: 500;">001/001</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">Tanggal</div>
+                            <div style="font-weight: 500;">15 Feb 2025</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <div style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 8px;">Keperluan</div>
+                    <p style="color: var(--gray-700); line-height: 1.6;">Untuk pembuatan KTP baru di Disdukcapil</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <div style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 8px;">Status Verifikasi</div>
+                    <ul class="activity-list" style="margin: 0;">
+                        <li class="activity-item" style="padding: 12px 0;">
+                            <div class="activity-icon green">✓</div>
+                            <div class="activity-content">
+                                <h4>Disetujui oleh RT</h4>
+                                <span class="activity-time">15 Feb 2025, 10:30 WIB</span>
+                            </div>
+                        </li>
+                        <li class="activity-item" style="padding: 12px 0;">
+                            <div class="activity-icon green">✓</div>
+                            <div class="activity-content">
+                                <h4>Disetujui oleh RW</h4>
+                                <span class="activity-time">15 Feb 2025, 14:00 WIB</span>
+                            </div>
+                        </li>
+                        <li class="activity-item" style="padding: 12px 0;">
+                            <div class="activity-icon blue">📥</div>
+                            <div class="activity-content">
+                                <h4>Surat Siap Diunduh</h4>
+                                <span class="activity-time">15 Feb 2025, 15:00 WIB</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal('detailSuratModal')">Tutup</button>
+                <button type="button" class="btn btn-primary">📥 Download Surat</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                auth.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

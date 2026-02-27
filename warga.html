@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Warga - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="warga.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Warga</span>
+                </a>
+                <a href="kk.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Kartu Keluarga</span>
+                </a>
+                <a href="requests.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">⏳</span>
+                    <span>Request Anggota</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Kas & Iuran</span>
+                </a>
+                <a href="kegiatan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📅</span>
+                    <span>Kegiatan</span>
+                </a>
+                <a href="laporan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📈</span>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Admin RT 001</div>
+                    <div class="sidebar-user-role">Administrator</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Data Warga</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="notification-btn" onclick="window.location.href='notifikasi.html'">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Table Container -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <input type="text" class="form-control" placeholder="🔍 Cari warga..." id="searchInput" style="width: 250px;">
+                            <select class="form-control" id="filterRT" style="width: 150px;">
+                                <option value="">Semua RT/RW</option>
+                                <option value="001/001">RT 001 / RW 001</option>
+                                <option value="002/001">RT 002 / RW 001</option>
+                                <option value="003/001">RT 003 / RW 001</option>
+                                <option value="004/002">RT 004 / RW 002</option>
+                                <option value="005/002">RT 005 / RW 002</option>
+                                <option value="006/002">RT 006 / RW 002</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-sm btn-outline" onclick="loadWargaData()" title="Refresh data">🔄 Refresh</button>
+                            <button class="btn btn-primary" onclick="openModal('addWargaModal')">➕ Tambah Warga</button>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>No. KK</th>
+                                <th>NIK</th>
+                                <th>Status dalam KK</th>
+                                <th>WhatsApp</th>
+                                <th>RT/RW</th>
+                                <th>No. Rumah</th>
+                                <th>Status</th>
+                                <th data-requires-role="staff">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wargaTableBody">
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">A</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Ahmad Santoso</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">ahmad@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>3171012345678001</td>
+                                <td>3171012345678901</td>
+                                <td><span class="badge badge-info">Kepala Keluarga</span></td>
+                                <td>
+                                    <a href="https://wa.me/6281234567890" target="_blank" style="color: var(--success-color, #10b981); text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                                        📱 0812-3456-7890
+                                    </a>
+                                </td>
+                                <td>RT 001 / RW 001</td>
+                                <td>A-12</td>
+                                <td><span class="badge badge-success">Aktif</span></td>
+                                <td class="table-actions" data-requires-role="staff">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('editWargaModal')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete()">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--secondary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">B</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Budi Pratama</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">budi@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>3171012345678002</td>
+                                <td>3171012345678902</td>
+                                <td><span class="badge badge-info">Kepala Keluarga</span></td>
+                                <td>
+                                    <a href="https://wa.me/6281234567891" target="_blank" style="color: var(--success-color, #10b981); text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                                        📱 0812-3456-7891
+                                    </a>
+                                </td>
+                                <td>RT 001 / RW 001</td>
+                                <td>A-15</td>
+                                <td><span class="badge badge-success">Aktif</span></td>
+                                <td class="table-actions" data-requires-role="staff">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('editWargaModal')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete()">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">C</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Citra Dewi</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">citra@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>3171012345678003</td>
+                                <td>3171012345678903</td>
+                                <td><span class="badge badge-info">Kepala Keluarga</span></td>
+                                <td>
+                                    <a href="https://wa.me/6281234567892" target="_blank" style="color: var(--success-color, #10b981); text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                                        📱 0812-3456-7892
+                                    </a>
+                                </td>
+                                <td>RT 002 / RW 001</td>
+                                <td>B-08</td>
+                                <td><span class="badge badge-warning">Pindah</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('editWargaModal')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete()">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--danger-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">D</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Dedi Kurniawan</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">dedi@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>3171012345678004</td>
+                                <td>3171012345678904</td>
+                                <td><span class="badge badge-info">Kepala Keluarga</span></td>
+                                <td>
+                                    <a href="https://wa.me/6281234567893" target="_blank" style="color: var(--success-color, #10b981); text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                                        📱 0812-3456-7893
+                                    </a>
+                                </td>
+                                <td>RT 003 / RW 001</td>
+                                <td>C-22</td>
+                                <td><span class="badge badge-success">Aktif</span></td>
+                                <td class="table-actions" data-requires-role="staff">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('editWargaModal')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete()">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">E</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Eka Putri</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">eka@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>3171012345678005</td>
+                                <td>3171012345678905</td>
+                                <td><span class="badge badge-info">Kepala Keluarga</span></td>
+                                <td>
+                                    <a href="https://wa.me/6281234567894" target="_blank" style="color: var(--success-color, #10b981); text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                                        📱 0812-3456-7894
+                                    </a>
+                                </td>
+                                <td>RT 004 / RW 002</td>
+                                <td>D-05</td>
+                                <td><span class="badge badge-danger">Meninggal</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('editWargaModal')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete()">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Warga Modal -->
+    <div class="modal-overlay" id="addWargaModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Warga Baru</h3>
+                <button class="modal-close" onclick="closeModal('addWargaModal')">&times;</button>
+            </div>
+            <form id="addWargaForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">No. Kartu Keluarga (KK)</label>
+                        <input type="text" class="form-control" pattern="[0-9]{16}" placeholder="16 digit No. KK" required>
+                        <small style="color: var(--gray-500); font-size: 0.85rem;">Setiap KK hanya bisa terdaftar 1 kali</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">NIK</label>
+                        <input type="text" class="form-control" pattern="[0-9]{16}" placeholder="16 digit NIK" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">No. Telepon / WhatsApp</label>
+                        <input type="tel" class="form-control" pattern="[0-9]{10,13}" placeholder="08xxxxxxxxxx" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tempat, Tanggal Lahir</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <input type="text" class="form-control" placeholder="Tempat lahir" required>
+                            <input type="date" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jenis Kelamin</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih Jenis Kelamin</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Agama</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih Agama</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Kristen">Kristen</option>
+                            <option value="Katolik">Katolik</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Buddha">Buddha</option>
+                            <option value="Konghucu">Konghucu</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">RT/RW</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih RT/RW</option>
+                            <option value="001/001">RT 001 / RW 001</option>
+                            <option value="002/001">RT 002 / RW 001</option>
+                            <option value="003/001">RT 003 / RW 001</option>
+                            <option value="004/002">RT 004 / RW 002</option>
+                            <option value="005/002">RT 005 / RW 002</option>
+                            <option value="006/002">RT 006 / RW 002</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nomor Rumah</label>
+                        <input type="text" class="form-control" placeholder="Contoh: A-12" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status Perkawinan</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih Status</option>
+                            <option value="Belum Kawin">Belum Kawin</option>
+                            <option value="Kawin">Kawin</option>
+                            <option value="Cerai Hidup">Cerai Hidup</option>
+                            <option value="Cerai Mati">Cerai Mati</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pekerjaan</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">No. Telepon</label>
+                        <input type="tel" class="form-control" placeholder="08xxxxxxxxxx" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status Warga</label>
+                        <select class="form-control" required>
+                            <option value="aktif">Aktif</option>
+                            <option value="pindah">Pindah</option>
+                            <option value="meninggal">Meninggal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('addWargaModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Warga Modal -->
+    <div class="modal-overlay" id="editWargaModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Data Warga</h3>
+                <button class="modal-close" onclick="closeModal('editWargaModal')">&times;</button>
+            </div>
+            <form id="editWargaForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">No. Kartu Keluarga (KK)</label>
+                        <input type="text" class="form-control" value="3171012345678001" pattern="[0-9]{16}" readonly style="background: var(--gray-100);">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-control" value="Ahmad Santoso" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">No. WhatsApp</label>
+                        <input type="tel" class="form-control" value="081234567890" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" value="ahmad@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status Warga</label>
+                        <select class="form-control" required>
+                            <option value="aktif" selected>Aktif</option>
+                            <option value="pindah">Pindah</option>
+                            <option value="meninggal">Meninggal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('editWargaModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Require authentication for admin/staff only
+        requireAuth([USER_ROLES.ADMIN, USER_ROLES.RT, USER_ROLES.RW]);
+
+        // Load warga data from database
+        async function loadWargaData() {
+            const tbody = document.getElementById('wargaTableBody');
+            if (!tbody) return;
+            
+            console.log('=== LOAD WARGA DATA ===');
+            
+            try {
+                // Fetch users from database
+                const users = await db.getAllUsers();
+                
+                console.log('All users from database:', users);
+                
+                // Filter to show only warga users
+                const wargaUsers = users.filter(u => u.role === USER_ROLES.WARGA);
+                
+                console.log('Filtered warga users:', wargaUsers);
+                console.log('Number of warga users:', wargaUsers.length);
+                
+                // Group by KK
+                const groupedByKK = wargaUsers.reduce((acc, user) => {
+                    const kk = user.no_kk || 'unknown';
+                    if (!acc[kk]) {
+                        acc[kk] = [];
+                    }
+                    acc[kk].push(user);
+                    return acc;
+                }, {});
+                
+                console.log('Grouped by KK:', groupedByKK);
+                
+                if (wargaUsers.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 40px; color: var(--gray-500);">
+                                Belum ada data warga. Warga dapat mendaftar melalui halaman register.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                // Render grouped data
+                let html = '';
+                let globalIndex = 1;
+                
+                for (const [kk, members] of Object.entries(groupedByKK)) {
+                    // KK Header Row
+                    html += `
+                        <tr style="background: var(--gray-100);">
+                            <td colspan="9" style="font-weight: 600; padding: 12px;">
+                                🏠 KK: ${kk} - Total Anggota: ${members.length}
+                            </td>
+                        </tr>
+                    `;
+                    
+                    // Member Rows
+                    members.forEach((user, index) => {
+                        const statusClass = {
+                            'aktif': 'badge-success',
+                            'pindah': 'badge-warning',
+                            'meninggal': 'badge-danger'
+                        }[user.status || 'aktif'];
+                        
+                        const statusText = {
+                            'aktif': 'Aktif',
+                            'pindah': 'Pindah',
+                            'meninggal': 'Meninggal'
+                        }[user.status || 'aktif'];
+                        
+                        const initial = user.nama ? user.nama.charAt(0).toUpperCase() : 'U';
+                        const whatsappDisplay = user.whatsapp ? formatWhatsApp(user.whatsapp) : '-';
+                        const whatsappLink = user.whatsapp ? `https://wa.me/${user.whatsapp.replace(/^0/, '62')}` : '#';
+
+                        // Use status_keluarga from database
+                        const isKepalaKeluarga = user.status_keluarga === 'kepala_keluarga';
+
+                        html += `
+                            <tr style="${isKepalaKeluarga ? '' : 'background: rgba(0,0,0,0.02);'}">
+                                <td>${globalIndex++}</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: ${isKepalaKeluarga ? 'var(--primary-color)' : 'var(--gray-400)'}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">${initial}</div>
+                                        <div>
+                                            <div style="font-weight: 500;">${escapeHtml(user.nama || '-')}</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">${escapeHtml(user.email || '-')} ${isKepalaKeluarga ? '<span class="badge badge-info" style="margin-left: 8px;">Kepala Keluarga</span>' : ''}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${user.no_kk || '-'}</td>
+                                <td>${user.nik || '-'}</td>
+                                <td>
+                                    <select onchange="updateStatusKeluargaWarga(${user.id}, this.value)" 
+                                            style="padding: 6px 12px; border-radius: 4px; border: 1px solid var(--gray-300); font-size: 0.85rem; cursor: pointer;">
+                                        <option value="kepala_keluarga" ${user.status_keluarga === 'kepala_keluarga' ? 'selected' : ''}>Kepala Keluarga</option>
+                                        <option value="anggota" ${user.status_keluarga === 'anggota' ? 'selected' : ''}>Anggota</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <a href="${whatsappLink}" target="_blank" style="color: var(--success-color, #10b981); text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                                        📱 ${whatsappDisplay}
+                                    </a>
+                                </td>
+                                <td>RT ${user.rt || '-'}</td>
+                                <td>${user.no_rumah || '-'}</td>
+                                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                                <td class="table-actions" data-requires-role="staff">
+                                    <button class="btn btn-sm btn-outline" onclick="editWarga('${user.id}')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteWarga('${user.id}')">🗑️</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+                
+                tbody.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading warga data:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 40px; color: var(--danger-color);">
+                            ❌ Error loading data: ${error.message}<br>
+                            <small>Pastikan XAMPP/MariaDB sudah berjalan dan API sudah dikonfigurasi dengan benar.</small>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        // Format WhatsApp number
+        function formatWhatsApp(number) {
+            const clean = number.replace(/\D/g, '');
+            if (clean.startsWith('62')) {
+                return clean.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
+            }
+            return clean.replace(/(\d{4})(\d{4})(\d{2,4})/, '$1-$2-$3');
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Update status_keluarga (for admin)
+        async function updateStatusKeluargaWarga(userId, newStatus) {
+            if (!confirm(`Ubah status anggota ini menjadi "${newStatus === 'kepala_keluarga' ? 'Kepala Keluarga' : 'Anggota'}"?`)) {
+                loadWargaData(); // Reload to reset dropdown
+                return;
+            }
+
+            try {
+                const response = await fetch('api/users.php?action=update', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: userId,
+                        status_keluarga: newStatus
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(`✅ Status berhasil diubah menjadi ${newStatus === 'kepala_keluarga' ? 'Kepala Keluarga' : 'Anggota'}!`);
+                    loadWargaData(); // Reload data
+                } else {
+                    alert('❌ Gagal update status: ' + result.message);
+                    loadWargaData(); // Reload to reset dropdown
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('❌ Terjadi kesalahan: ' + error.message);
+                loadWargaData(); // Reload to reset dropdown
+            }
+        }
+        
+        // Edit warga
+        async function editWarga(userId) {
+            try {
+                const user = await db.getUserById(userId);
+                
+                if (!user) {
+                    alert('❌ User tidak ditemukan!');
+                    return;
+                }
+                
+                // Store current edit user ID
+                window.currentEditUserId = userId;
+                
+                // Fill modal with user data
+                const modal = document.getElementById('editWargaModal');
+                const inputs = modal.querySelectorAll('input');
+                const select = modal.querySelector('select');
+                
+                inputs[0].value = user.no_kk || '';  // No KK (readonly)
+                inputs[1].value = user.nama || '';  // Nama
+                inputs[2].value = user.whatsapp || '';  // WhatsApp
+                inputs[3].value = user.email || '';  // Email
+                
+                if (select) {
+                    select.value = user.status || 'aktif';
+                }
+                
+                openModal('editWargaModal');
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            }
+        }
+        
+        // Delete warga
+        async function deleteWarga(userId) {
+            if (confirm('Apakah Anda yakin ingin menghapus data warga ini?')) {
+                try {
+                    const result = await db.deleteUser(userId);
+                    
+                    if (result.success) {
+                        alert('✅ Data warga berhasil dihapus!');
+                        loadWargaData();
+                    } else {
+                        alert('❌ Gagal menghapus: ' + result.message);
+                    }
+                } catch (error) {
+                    alert('❌ Error: ' + error.message);
+                }
+            }
+        }
+        
+        // Handle edit form submit
+        document.getElementById('editWargaForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!window.currentEditUserId) {
+                alert('❌ Error: User ID tidak ditemukan');
+                return;
+            }
+            
+            const modal = document.getElementById('editWargaModal');
+            const inputs = modal.querySelectorAll('input');
+            const select = modal.querySelector('select');
+            
+            const updatedData = {
+                nama: inputs[1].value,
+                whatsapp: inputs[2].value,
+                email: inputs[3].value,
+                status: select ? select.value : 'aktif'
+            };
+            
+            try {
+                const result = await db.updateUser(window.currentEditUserId, updatedData);
+                
+                if (result.success) {
+                    alert('✅ Data warga berhasil diupdate!');
+                    closeModal('editWargaModal');
+                    window.currentEditUserId = null;
+                    loadWargaData();
+                } else {
+                    alert('❌ Gagal update: ' + result.message);
+                }
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            }
+        });
+        
+        // Handle add warga form submit
+        document.getElementById('addWargaForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('ℹ️ Fitur tambah warga langsung dari admin panel akan segera ditambahkan. Untuk saat ini, warga harus mendaftar sendiri melalui halaman register.');
+            closeModal('addWargaModal');
+        });
+
+        // Filter data based on role
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = auth.getCurrentUser();
+            
+            console.log('=== WARGA PAGE LOAD ===');
+            console.log('Current user:', user);
+
+            // If warga, redirect to their own page
+            if (user && user.role === USER_ROLES.WARGA) {
+                window.location.href = 'warga-saya.html';
+                return;
+            }
+
+            // Update UI based on role
+            updateUIForRole();
+            
+            // Load warga data
+            console.log('Loading warga data...');
+            loadWargaData();
+            
+            // Listen for storage changes (from other tabs)
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'users') {
+                    console.log('Storage changed! Reloading warga data...');
+                    loadWargaData();
+                }
+            });
+
+            // Setup search functionality
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const tableRows = document.querySelectorAll('#wargaTableBody tr');
+                    
+                    tableRows.forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.includes(searchTerm) ? '' : 'none';
+                    });
+                });
+            }
+            
+            // Setup RT filter
+            const filterRT = document.getElementById('filterRT');
+            if (filterRT) {
+                filterRT.addEventListener('change', (e) => {
+                    const filterValue = e.target.value;
+                    const tableRows = document.querySelectorAll('#wargaTableBody tr');
+                    
+                    tableRows.forEach(row => {
+                        const rtCell = row.cells[6]?.textContent.trim();
+                        if (filterValue === '' || rtCell === filterValue) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        });
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                auth.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

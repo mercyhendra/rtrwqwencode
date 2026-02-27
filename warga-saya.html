@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Saya - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="warga-saya.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">👤</span>
+                    <span>Data Saya</span>
+                </a>
+                <a href="keluarga-saya.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🏠</span>
+                    <span>Keluarga Saya</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran-saya.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Iuran Saya</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="userAvatar">U</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userName">User</div>
+                    <div class="sidebar-user-role" id="userRole">Warga</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Data Saya</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="notification-btn" onclick="window.location.href='notifikasi.html'">
+                        🔔
+                        <span class="notification-badge" id="notifBadge">3</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div id="contentArea">
+                    <!-- Content will be loaded by JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal-overlay" id="editProfileModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Profil</h3>
+                <button class="modal-close" onclick="closeModal('editProfileModal')">&times;</button>
+            </div>
+            <form id="editProfileForm">
+                <div class="modal-body">
+                    <div class="alert alert-warning" style="font-size: 0.85rem;">
+                        <strong>⚠️ Catatan:</strong> Anda hanya dapat mengedit Nama, WhatsApp, Email, dan Pekerjaan. 
+                        Untuk perubahan NIK, No. KK, atau RT/RW, hubungi admin.
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" id="editNama" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">No. WhatsApp</label>
+                        <input type="tel" id="editWhatsapp" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="editEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pekerjaan</label>
+                        <input type="text" id="editPekerjaan" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">No. KK (Tidak dapat diubah)</label>
+                        <input type="text" id="editNoKK" class="form-control" readonly style="background: var(--gray-100);">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">NIK (Tidak dapat diubah)</label>
+                        <input type="text" id="editNik" class="form-control" readonly style="background: var(--gray-100);">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('editProfileModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Require authentication
+        requireAuth([USER_ROLES.WARGA]);
+
+        // Load user data
+        function loadUserData() {
+            const user = auth.getCurrentUser();
+            if (!user) return;
+
+            const contentArea = document.getElementById('contentArea');
+            
+            contentArea.innerHTML = `
+                <div class="alert alert-info" style="margin-bottom: 24px;">
+                    <strong>ℹ️ Info:</strong> Anda dapat mengedit data pribadi Anda. Untuk perubahan NIK, No. KK, atau RT/RW, hubungi admin.
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <!-- Personal Info Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Informasi Pribadi</h3>
+                            <button class="btn btn-sm btn-primary" onclick="openEditModal()">✏️ Edit Profil</button>
+                        </div>
+                        <div class="card-body">
+                            <div style="text-align: center; margin-bottom: 24px;">
+                                <div style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; font-weight: 700; margin: 0 auto 16px;">
+                                    ${user.nama.charAt(0).toUpperCase()}
+                                </div>
+                                <h3 style="margin-bottom: 4px;">${user.nama}</h3>
+                                <span class="badge badge-info">${user.role === 'warga' ? 'Warga' : user.role.toUpperCase()}</span>
+                            </div>
+                            
+                            <div style="display: grid; gap: 16px;">
+                                <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--gray-100); border-radius: var(--radius);">
+                                    <span style="color: var(--gray-600);">NIK</span>
+                                    <span style="font-weight: 600;">${user.nik || '-'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--gray-100); border-radius: var(--radius);">
+                                    <span style="color: var(--gray-600);">No. KK</span>
+                                    <span style="font-weight: 600;">${user.noKK || '-'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--gray-100); border-radius: var(--radius);">
+                                    <span style="color: var(--gray-600);">Email</span>
+                                    <span style="font-weight: 600;">${user.email || '-'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--gray-100); border-radius: var(--radius);">
+                                    <span style="color: var(--gray-600);">WhatsApp</span>
+                                    <span style="font-weight: 600;">📱 ${user.whatsapp || '-'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--gray-100); border-radius: var(--radius);">
+                                    <span style="color: var(--gray-600);">RT/RW</span>
+                                    <span style="font-weight: 600;">${user.rt || '-'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--gray-100); border-radius: var(--radius);">
+                                    <span style="color: var(--gray-600);">No. Rumah</span>
+                                    <span style="font-weight: 600;">${user.noRumah || '-'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Family Info Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Informasi Keluarga</h3>
+                            <a href="keluarga-saya.html" class="btn btn-sm btn-outline">Lihat Semua</a>
+                        </div>
+                        <div class="card-body">
+                            <div style="margin-bottom: 16px;">
+                                <div style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 8px;">Nomor Kartu Keluarga</div>
+                                <div style="font-size: 1.25rem; font-weight: 700; color: var(--primary-color);">${user.noKK || '-'}</div>
+                            </div>
+                            
+                            <div style="margin-bottom: 16px;">
+                                <div style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 8px;">Alamat</div>
+                                <div style="font-weight: 500;">RT ${user.rt || '-'} / No. Rumah ${user.noRumah || '-'}</div>
+                            </div>
+
+                            <div style="border-top: 1px solid var(--gray-200); padding-top: 16px;">
+                                <h4 style="font-size: 1rem; margin-bottom: 12px;">Status Iuran</h4>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: var(--radius); margin-bottom: 8px;">
+                                    <span style="font-size: 1.5rem;">✅</span>
+                                    <div>
+                                        <div style="font-weight: 600; color: var(--secondary-color);">Lunas</div>
+                                        <div style="font-size: 0.85rem; color: var(--gray-600);">Iuran bulan ini</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="border-top: 1px solid var(--gray-200); padding-top: 16px; margin-top: 16px;">
+                                <h4 style="font-size: 1rem; margin-bottom: 12px;">Surat Terakhir</h4>
+                                <div style="padding: 12px; background: var(--gray-100); border-radius: var(--radius);">
+                                    <div style="font-weight: 600; margin-bottom: 4px;">Belum ada pengajuan surat</div>
+                                    <a href="layanan.html" class="btn btn-sm btn-primary" style="margin-top: 8px;">📋 Ajukan Surat</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card" style="margin-top: 24px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Aksi Cepat</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                            <a href="layanan.html" class="btn btn-outline" style="padding: 20px; text-align: center;">
+                                <div style="font-size: 2rem; margin-bottom: 8px;">📋</div>
+                                <div style="font-weight: 600;">Ajukan Surat</div>
+                                <div style="font-size: 0.85rem; color: var(--gray-600);">Surat keterangan domisili, dll</div>
+                            </a>
+                            <a href="iuran-saya.html" class="btn btn-outline" style="padding: 20px; text-align: center;">
+                                <div style="font-size: 2rem; margin-bottom: 8px;">💰</div>
+                                <div style="font-weight: 600;">Bayar Iuran</div>
+                                <div style="font-size: 0.85rem; color: var(--gray-600);">Cek & bayar iuran</div>
+                            </a>
+                            <a href="pengumuman.html" class="btn btn-outline" style="padding: 20px; text-align: center;">
+                                <div style="font-size: 2rem; margin-bottom: 8px;">📢</div>
+                                <div style="font-weight: 600;">Pengumuman</div>
+                                <div style="font-size: 0.85rem; color: var(--gray-600);">Lihat pengumuman terbaru</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Update sidebar
+            document.getElementById('userName').textContent = user.nama;
+            document.getElementById('userAvatar').textContent = user.nama.charAt(0).toUpperCase();
+        }
+
+        // Open edit modal
+        function openEditModal() {
+            const user = auth.getCurrentUser();
+            document.getElementById('editNama').value = user.nama || '';
+            document.getElementById('editWhatsapp').value = user.whatsapp || '';
+            document.getElementById('editEmail').value = user.email || '';
+            document.getElementById('editPekerjaan').value = user.pekerjaan || '';
+            document.getElementById('editNoKK').value = user.noKK || '-';
+            document.getElementById('editNik').value = user.nik || '-';
+            openModal('editProfileModal');
+        }
+
+        // Update profile
+        document.getElementById('editProfileForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const user = auth.getCurrentUser();
+            const updatedData = {
+                nama: document.getElementById('editNama').value,
+                whatsapp: document.getElementById('editWhatsapp').value,
+                email: document.getElementById('editEmail').value,
+                pekerjaan: document.getElementById('editPekerjaan').value
+            };
+
+            const result = auth.updateUser(user.id, updatedData);
+            
+            if (result.success) {
+                alert('✅ Profil berhasil diupdate!');
+                closeModal('editProfileModal');
+                loadUserData();
+            } else {
+                alert('❌ Gagal update profil: ' + result.message);
+            }
+        });
+
+        // Logout
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                auth.logout();
+                // Clear all session data
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', loadUserData);
+    </script>
+</body>
+</html>

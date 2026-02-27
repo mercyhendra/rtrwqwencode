@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="warga.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Warga</span>
+                </a>
+                <a href="kk.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Kartu Keluarga</span>
+                </a>
+                <a href="requests.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">⏳</span>
+                    <span>Request Anggota</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Kas & Iuran</span>
+                </a>
+                <a href="kegiatan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📅</span>
+                    <span>Kegiatan</span>
+                </a>
+                <a href="laporan.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">📈</span>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Admin RT 001</div>
+                    <div class="sidebar-user-role">Administrator</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Laporan</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="notification-btn" onclick="window.location.href='notifikasi.html'">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Report Types -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px;">
+                    <div class="card" style="cursor: pointer;" onclick="openModal('generateLaporanModal')">
+                        <div class="card-body" style="text-align: center; padding: 32px;">
+                            <div style="width: 70px; height: 70px; background: rgba(37, 99, 235, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px;">👥</div>
+                            <h3 style="margin-bottom: 8px;">Laporan Warga</h3>
+                            <p style="color: var(--gray-600); font-size: 0.9rem;">Statistik dan data kependudukan</p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="cursor: pointer;" onclick="openModal('generateLaporanModal')">
+                        <div class="card-body" style="text-align: center; padding: 32px;">
+                            <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px;">💰</div>
+                            <h3 style="margin-bottom: 8px;">Laporan Keuangan</h3>
+                            <p style="color: var(--gray-600); font-size: 0.9rem;">Kas, iuran, dan pengeluaran</p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="cursor: pointer;" onclick="openModal('generateLaporanModal')">
+                        <div class="card-body" style="text-align: center; padding: 32px;">
+                            <div style="width: 70px; height: 70px; background: rgba(245, 158, 11, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px;">📅</div>
+                            <h3 style="margin-bottom: 8px;">Laporan Kegiatan</h3>
+                            <p style="color: var(--gray-600); font-size: 0.9rem;">Partisipasi dan evaluasi kegiatan</p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="cursor: pointer;" onclick="openModal('generateLaporanModal')">
+                        <div class="card-body" style="text-align: center; padding: 32px;">
+                            <div style="width: 70px; height: 70px; background: rgba(239, 68, 68, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px;">📋</div>
+                            <h3 style="margin-bottom: 8px;">Laporan Surat</h3>
+                            <p style="color: var(--gray-600); font-size: 0.9rem;">Permohonan dan penerbitan surat</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generated Reports -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="card-title">Laporan Tersedia</h3>
+                        <div style="display: flex; gap: 12px;">
+                            <select class="form-control" style="width: 150px;">
+                                <option value="">Semua Jenis</option>
+                                <option value="warga">Laporan Warga</option>
+                                <option value="keuangan">Laporan Keuangan</option>
+                                <option value="kegiatan">Laporan Kegiatan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Laporan</th>
+                                <th>Jenis</th>
+                                <th>Periode</th>
+                                <th>Tanggal Dibuat</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 40px; height: 40px; background: rgba(16, 185, 129, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">💰</div>
+                                        <span>Laporan Keuangan Januari 2025</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-success">Keuangan</span></td>
+                                <td>Januari 2025</td>
+                                <td>01 Feb 2025</td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline">👁️ Preview</button>
+                                    <button class="btn btn-sm btn-primary">📥 Download</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">👥</div>
+                                        <span>Laporan Kependudukan 2024</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-info">Warga</span></td>
+                                <td>Tahun 2024</td>
+                                <td>15 Jan 2025</td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline">👁️ Preview</button>
+                                    <button class="btn btn-sm btn-primary">📥 Download</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 40px; height: 40px; background: rgba(245, 158, 11, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">📅</div>
+                                        <span>Laporan Kegiatan 17 Agustus</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-warning">Kegiatan</span></td>
+                                <td>Agustus 2024</td>
+                                <td>20 Agu 2024</td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline">👁️ Preview</button>
+                                    <button class="btn btn-sm btn-primary">📥 Download</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 40px; height: 40px; background: rgba(139, 92, 246, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">📋</div>
+                                        <span>Laporan Pelayanan Surat Q4 2024</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-info">Surat</span></td>
+                                <td>Q4 2024</td>
+                                <td>05 Jan 2025</td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline">👁️ Preview</button>
+                                    <button class="btn btn-sm btn-primary">📥 Download</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Generate Laporan Modal -->
+    <div class="modal-overlay" id="generateLaporanModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Generate Laporan</h3>
+                <button class="modal-close" onclick="closeModal('generateLaporanModal')">&times;</button>
+            </div>
+            <form id="generateLaporanForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Jenis Laporan</label>
+                        <select class="form-control" required onchange="togglePeriodeOptions(this.value)">
+                            <option value="">Pilih Jenis Laporan</option>
+                            <option value="warga">Laporan Warga</option>
+                            <option value="keuangan">Laporan Keuangan</option>
+                            <option value="kegiatan">Laporan Kegiatan</option>
+                            <option value="surat">Laporan Surat</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Periode</label>
+                        <select class="form-control" id="periodeLaporan" required>
+                            <option value="">Pilih Periode</option>
+                            <option value="harian">Harian</option>
+                            <option value="mingguan">Mingguan</option>
+                            <option value="bulanan">Bulanan</option>
+                            <option value="tahunan">Tahunan</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="tanggalGroup">
+                        <label class="form-label">Tanggal/Periode</label>
+                        <input type="date" class="form-control" id="tanggalLaporan">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Format Export</label>
+                        <select class="form-control" required>
+                            <option value="pdf">PDF</option>
+                            <option value="excel">Excel (.xlsx)</option>
+                            <option value="csv">CSV</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Opsi Tambahan</label>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" checked>
+                                <span>Sertakan grafik/statistik</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" checked>
+                                <span>Sertakan ringkasan</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox">
+                                <span>Sertakan detail per warga</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('generateLaporanModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Generate Laporan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function togglePeriodeOptions(jenis) {
+            const periodeSelect = document.getElementById('periodeLaporan');
+            const tanggalGroup = document.getElementById('tanggalGroup');
+
+            if (jenis === 'keuangan') {
+                periodeSelect.innerHTML = `
+                    <option value="">Pilih Periode</option>
+                    <option value="bulanan">Bulanan</option>
+                    <option value="triwulan">Triwulan</option>
+                    <option value="tahunan">Tahunan</option>
+                `;
+            } else if (jenis === 'kegiatan') {
+                periodeSelect.innerHTML = `
+                    <option value="">Pilih Periode</option>
+                    <option value="per_kegiatan">Per Kegiatan</option>
+                    <option value="bulanan">Bulanan</option>
+                    <option value="tahunan">Tahunan</option>
+                `;
+            } else {
+                periodeSelect.innerHTML = `
+                    <option value="">Pilih Periode</option>
+                    <option value="harian">Harian</option>
+                    <option value="mingguan">Mingguan</option>
+                    <option value="bulanan">Bulanan</option>
+                    <option value="tahunan">Tahunan</option>
+                `;
+            }
+        }
+
+        document.getElementById('generateLaporanForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Laporan sedang digenerate. Download akan dimulai setelah selesai.');
+            closeModal('generateLaporanModal');
+        });
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                auth.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

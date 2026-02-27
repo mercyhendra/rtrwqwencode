@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kartu Keluarga - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #kkDetailContent, #kkDetailContent * {
+                visibility: visible;
+            }
+            #kkDetailContent {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="warga.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Warga</span>
+                </a>
+                <a href="kk.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Kartu Keluarga</span>
+                </a>
+                <a href="requests.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">⏳</span>
+                    <span>Request Anggota</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Kas & Iuran</span>
+                </a>
+                <a href="kegiatan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📅</span>
+                    <span>Kegiatan</span>
+                </a>
+                <a href="laporan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📈</span>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Admin RT 001</div>
+                    <div class="sidebar-user-role">Administrator</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Kartu Keluarga</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="notification-btn" onclick="window.location.href='notifikasi.html'">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Info Banner -->
+                <div class="alert alert-info" style="margin-bottom: 24px;">
+                    <strong>ℹ️ Info:</strong> Setiap Kartu Keluarga (KK) hanya bisa terdaftar 1 kali di sistem.
+                    Untuk menambah anggota keluarga, gunakan fitur "Tambah Anggota" pada setiap KK.
+                </div>
+
+                <!-- KK Cards Container -->
+                <div id="kkCardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 24px;">
+                    <!-- Cards will be loaded here by JavaScript -->
+                    <div style="text-align: center; padding: 40px; grid-column: 1/-1;">
+                        <div style="font-size: 3rem; margin-bottom: 16px;">🏠</div>
+                        <div style="color: var(--gray-500);">Loading data Kartu Keluarga...</div>
+                    </div>
+                </div>
+
+                <!-- Add KK Button -->
+                <button class="btn btn-primary btn-lg" onclick="openModal('addKKModal')" data-requires-role="staff" style="position: fixed; bottom: 32px; right: 32px; border-radius: 50%; width: 60px; height: 60px; padding: 0; font-size: 1.5rem; box-shadow: var(--shadow-xl);">+</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- My Requests Section (for warga) -->
+    <div class="card" id="myRequestsSection" style="display: none; margin: 24px; max-width: 1200px;">
+        <div class="card-header">
+            <h3 class="card-title">Status Request Penambahan Anggota</h3>
+            <button class="btn btn-sm btn-outline" onclick="loadMyRequests()">🔄 Refresh</button>
+        </div>
+        <div class="card-body" id="myRequestsContent">
+            <div style="text-align: center; padding: 20px; color: var(--gray-500);">
+                Loading request...
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail KK Modal -->
+    <div class="modal-overlay" id="detailKKModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Detail Kartu Keluarga</h3>
+                <button class="modal-close" onclick="closeModal('detailKKModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="kkDetailContent">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal('detailKKModal')">Tutup</button>
+                <button type="button" class="btn btn-primary" onclick="printKK()">📥 Cetak PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit KK Modal -->
+    <div class="modal-overlay" id="editKKModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Kartu Keluarga</h3>
+                <button class="modal-close" onclick="closeModal('editKKModal')">&times;</button>
+            </div>
+            <form id="editKKForm">
+                <div class="modal-body">
+                    <input type="hidden" id="editKKUserId">
+                    <div class="form-group">
+                        <label class="form-label">No. Kartu Keluarga (KK)</label>
+                        <input type="text" id="editKKNKK" class="form-control" pattern="[0-9]{16}" placeholder="16 digit No. KK" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Kepala Keluarga</label>
+                        <input type="text" id="editKKNama" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">NIK Kepala Keluarga</label>
+                        <input type="text" id="editKKNIK" class="form-control" pattern="[0-9]{16}" placeholder="16 digit NIK" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">No. WhatsApp</label>
+                        <input type="tel" id="editKKWhatsApp" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">RT/RW</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <input type="text" id="editKKRT" class="form-control" placeholder="RT" required>
+                            <input type="text" id="editKKRW" class="form-control" placeholder="RW" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nomor Rumah</label>
+                        <input type="text" id="editKKNoRumah" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select id="editKKStatus" class="form-control" required>
+                            <option value="aktif">Aktif</option>
+                            <option value="pindah">Pindah</option>
+                            <option value="meninggal">Meninggal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('editKKModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add KK Modal -->
+    <div class="modal-overlay" id="addKKModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Kartu Keluarga Baru</h3>
+                <button class="modal-close" onclick="closeModal('addKKModal')">&times;</button>
+            </div>
+            <form id="addKKForm">
+                <div class="modal-body">
+                    <div class="alert alert-info" style="font-size: 0.9rem;">
+                        <strong>ℹ️ Perhatikan:</strong> Setiap KK hanya bisa terdaftar 1 kali. Pastikan nomor KK yang dimasukkan benar.
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nomor Kartu Keluarga (KK)</label>
+                        <input type="text" class="form-control" pattern="[0-9]{16}" placeholder="16 digit No. KK" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Kepala Keluarga</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">NIK Kepala Keluarga</label>
+                        <input type="text" class="form-control" pattern="[0-9]{16}" placeholder="16 digit NIK" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">No. WhatsApp</label>
+                        <input type="tel" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">RT/RW</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih RT/RW</option>
+                            <option value="001/001">RT 001 / RW 001</option>
+                            <option value="002/001">RT 002 / RW 001</option>
+                            <option value="003/001">RT 003 / RW 001</option>
+                            <option value="004/002">RT 004 / RW 002</option>
+                            <option value="005/002">RT 005 / RW 002</option>
+                            <option value="006/002">RT 006 / RW 002</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nomor Rumah</label>
+                        <input type="text" class="form-control" placeholder="Contoh: A-12" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('addKKModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Anggota Keluarga Modal -->
+    <div class="modal-overlay" id="addAnggotaModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Ajukan Penambahan Anggota Keluarga</h3>
+                <button class="modal-close" onclick="closeModal('addAnggotaModal')">&times;</button>
+            </div>
+            <form id="addAnggotaForm">
+                <div class="modal-body">
+                    <div class="alert alert-info" style="font-size: 0.85rem;">
+                        <strong>ℹ️ Info:</strong> Request ini akan dikirim ke admin RT/RW untuk persetujuan. 
+                        Pastikan data yang diisi sudah benar.
+                    </div>
+                    <input type="hidden" id="addAnggotaNoKK">
+                    <input type="hidden" id="addAnggotaUserId">
+                    <div class="form-group">
+                        <label class="form-label">No. KK</label>
+                        <input type="text" id="addAnggotaNoKKDisplay" class="form-control" readonly style="background: var(--gray-100);">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap Anggota</label>
+                        <input type="text" id="addAnggotaNama" class="form-control" placeholder="Nama lengkap anggota keluarga" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">NIK</label>
+                        <input type="text" id="addAnggotaNIK" class="form-control" pattern="[0-9]{16}" placeholder="16 digit NIK">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Hubungan dengan Kepala Keluarga</label>
+                        <select id="addAnggotaHubungan" class="form-control" required>
+                            <option value="">Pilih Hubungan</option>
+                            <option value="istri">Istri</option>
+                            <option value="suami">Suami</option>
+                            <option value="anak">Anak</option>
+                            <option value="orang_tua">Orang Tua</option>
+                            <option value="saudara">Saudara</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jenis Kelamin</label>
+                        <select id="addAnggotaJK" class="form-control" required>
+                            <option value="">Pilih Jenis Kelamin</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tempat, Tanggal Lahir</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <input type="text" id="addAnggotaTempatLahir" class="form-control" placeholder="Tempat lahir">
+                            <input type="date" id="addAnggotaTanggalLahir" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pekerjaan</label>
+                        <input type="text" id="addAnggotaPekerjaan" class="form-control" placeholder="Pekerjaan">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Alasan Penambahan</label>
+                        <textarea id="addAnggotaAlasan" class="form-control" rows="3" placeholder="Jelaskan alasan penambahan anggota keluarga..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('addAnggotaModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Ajukan Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Detail KK Modal -->
+    <div class="modal-overlay" id="detailKKModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Detail Kartu Keluarga</h3>
+                <button class="modal-close" onclick="closeModal('detailKKModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; padding: 20px; border-radius: var(--radius); margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h3 style="font-size: 1.3rem;">KARTU KELUARGA</h3>
+                        <span style="font-size: 2rem;">🏠</span>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 700; letter-spacing: 2px;">3171012345678001</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">No. Rumah</div>
+                        <div style="font-weight: 600;">A-12</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">RT/RW</div>
+                        <div style="font-weight: 600;">001/001</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">Kepala Keluarga</div>
+                        <div style="font-weight: 600;">Ahmad Santoso</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">WhatsApp</div>
+                        <div style="font-weight: 600;">📱 0812-3456-7890</div>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 12px; font-size: 1rem;">Daftar Anggota Keluarga</h4>
+                    <table class="table" style="font-size: 0.9rem;">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Hubungan</th>
+                                <th>L/P</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Ahmad Santoso</td>
+                                <td>Kepala Keluarga</td>
+                                <td>L</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Siti Nurhaliza</td>
+                                <td>Istri</td>
+                                <td>P</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Fajar Santoso</td>
+                                <td>Anak</td>
+                                <td>L</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Putri Santoso</td>
+                                <td>Anak</td>
+                                <td>P</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal('detailKKModal')">Tutup</button>
+                <button type="button" class="btn btn-primary">📥 Cetak KK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        console.log('KK Page Script Loaded');
+        console.log('db object:', typeof db);
+        console.log('USER_ROLES:', USER_ROLES);
+
+        // Load KK data from database
+        async function loadKKData() {
+            const container = document.getElementById('kkCardsContainer');
+            if (!container) {
+                console.error('Container kkCardsContainer not found!');
+                return;
+            }
+            
+            console.log('=== LOAD KK DATA ===');
+            
+            try {
+                // Check if db is available
+                if (typeof db === 'undefined') {
+                    throw new Error('Database API (db) is not loaded!');
+                }
+                
+                // Fetch users from database
+                console.log('Fetching users from database...');
+                const users = await db.getAllUsers();
+                
+                console.log('All users from database:', users);
+                
+                if (!users || users.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; grid-column: 1/-1;">
+                            <div style="font-size: 3rem; margin-bottom: 16px;">🏠</div>
+                            <div style="color: var(--gray-500);">Belum ada data Kartu Keluarga</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Filter to show only warga users
+                const wargaUsers = users.filter(u => u.role === 'warga');
+                
+                console.log('Filtered warga users:', wargaUsers);
+                console.log('Number of warga users:', wargaUsers.length);
+                
+                // Group by KK
+                const groupedByKK = wargaUsers.reduce((acc, user) => {
+                    const kk = user.no_kk || 'unknown';
+                    if (!acc[kk]) {
+                        acc[kk] = [];
+                    }
+                    acc[kk].push(user);
+                    return acc;
+                }, {});
+                
+                console.log('Grouped by KK:', groupedByKK);
+                console.log('Number of unique KK:', Object.keys(groupedByKK).length);
+                
+                if (wargaUsers.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; grid-column: 1/-1;">
+                            <div style="font-size: 3rem; margin-bottom: 16px;">🏠</div>
+                            <div style="color: var(--gray-500);">Belum ada data Kartu Keluarga</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Render KK cards
+                let html = '';
+                
+                for (const [kk, members] of Object.entries(groupedByKK)) {
+                    console.log('Rendering KK:', kk, 'with', members.length, 'members');
+                    
+                    const kepalaKeluarga = members[0]; // First member is kepala keluarga
+                    const statusClass = {
+                        'aktif': 'badge-success',
+                        'pindah': 'badge-warning',
+                        'meninggal': 'badge-danger'
+                    }[kepalaKeluarga.status || 'aktif'];
+                    
+                    const statusText = {
+                        'aktif': 'Aktif',
+                        'pindah': 'Pindah',
+                        'meninggal': 'Meninggal'
+                    }[kepalaKeluarga.status || 'aktif'];
+                    
+                    const initial = kepalaKeluarga.nama ? kepalaKeluarga.nama.charAt(0).toUpperCase() : 'K';
+                    
+                    html += `
+                        <div class="card">
+                            <div class="card-header">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 50px; height: 50px; background: rgba(37, 99, 235, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🏠</div>
+                                    <div>
+                                        <h3 class="card-title" style="font-size: 1.1rem;">KK ${kk}</h3>
+                                        <p style="font-size: 0.85rem; color: var(--gray-500);">${kepalaKeluarga.no_rumah || '-'} • RT ${kepalaKeluarga.rt || '-'}/${kepalaKeluarga.rw || '-'}</p>
+                                    </div>
+                                </div>
+                                <span class="badge ${statusClass}">${statusText}</span>
+                            </div>
+                            <div class="card-body">
+                                <div style="margin-bottom: 16px;">
+                                    <div style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 8px;">Kepala Keluarga</div>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 40px; height: 40px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">${initial}</div>
+                                        <div>
+                                            <div style="font-weight: 600;">${escapeHtml(kepalaKeluarga.nama)}</div>
+                                            <div style="font-size: 0.85rem; color: var(--gray-500);">📱 ${kepalaKeluarga.whatsapp || '-'}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 16px;">
+                                    <div style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 8px;">Anggota Keluarga (${members.length})</div>
+                                    <ul class="activity-list" style="margin: 0; max-height: 150px; overflow-y: auto;">
+                                        ${members.map(member => {
+                                            const memberInitial = member.nama ? member.nama.charAt(0).toUpperCase() : 'M';
+                                            const colorClass = member.id === kepalaKeluarga.id ? 'green' : 'blue';
+                                            return `
+                                                <li class="activity-item" style="padding: 8px 0;">
+                                                    <div class="activity-icon ${colorClass}">👤</div>
+                                                    <div class="activity-content">
+                                                        <h4>${escapeHtml(member.nama)} ${member.id === kepalaKeluarga.id ? '(Kepala Keluarga)' : ''}</h4>
+                                                        <span class="activity-time">${member.pekerjaan || '-'}</span>
+                                                    </div>
+                                                </li>
+                                            `;
+                                        }).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-footer" style="display: flex; gap: 8px;">
+                                <button class="btn btn-sm btn-primary" style="flex: 1;" onclick="addAnggotaKeluarga('${kk}', '${kepalaKeluarga.id}', '${escapeHtml(kepalaKeluarga.nama)}')">➕ Tambah Anggota</button>
+                                <button class="btn btn-sm btn-outline" onclick="showDetailKK('${kk}', ${JSON.stringify(members).replace(/"/g, '&quot;')})">👁️ Detail</button>
+                                <button class="btn btn-sm btn-outline" onclick="editKK('${kepalaKeluarga.id}', '${kepalaKeluarga.nama}', '${kepalaKeluarga.no_kk}', '${kepalaKeluarga.nik}', '${kepalaKeluarga.whatsapp}', '${kepalaKeluarga.rt}', '${kepalaKeluarga.rw}', '${kepalaKeluarga.no_rumah}', '${kepalaKeluarga.status}')" data-requires-role="staff">✏️</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                console.log('Final HTML length:', html.length);
+                container.innerHTML = html;
+                console.log('✅ KK cards rendered successfully!');
+                
+            } catch (error) {
+                console.error('❌ Error loading KK data:', error);
+                console.error('Error stack:', error.stack);
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; grid-column: 1/-1;">
+                        <div style="font-size: 3rem; margin-bottom: 16px;">❌</div>
+                        <div style="color: var(--danger-color);">Error loading data: ${error.message}</div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500); margin-top: 8px;">Check console for details</div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Escape HTML
+        function escapeHtml(text) {
+            if (!text) return '-';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Show Detail KK
+        function showDetailKK(kk, members) {
+            const content = document.getElementById('kkDetailContent');
+            const kepalaKeluarga = members[0];
+            
+            let html = `
+                <div style="background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; padding: 20px; border-radius: var(--radius); margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h3 style="font-size: 1.3rem; margin: 0;">KARTU KELUARGA</h3>
+                        <span style="font-size: 2rem;">🏠</span>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 700; letter-spacing: 2px;">${kk}</div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">No. Rumah</div>
+                        <div style="font-weight: 600;">${kepalaKeluarga.no_rumah || '-'}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">RT/RW</div>
+                        <div style="font-weight: 600;">${kepalaKeluarga.rt || '-'}/${kepalaKeluarga.rw || '-'}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">Kepala Keluarga</div>
+                        <div style="font-weight: 600;">${kepalaKeluarga.nama || '-'}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">WhatsApp</div>
+                        <div style="font-weight: 600;">📱 ${kepalaKeluarga.whatsapp || '-'}</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 style="margin-bottom: 12px; font-size: 1rem;">Daftar Anggota Keluarga</h4>
+                    <table class="table" style="font-size: 0.9rem;">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>NIK</th>
+                                <th>Pekerjaan</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            members.forEach((member, index) => {
+                const statusClass = {
+                    'aktif': 'badge badge-success',
+                    'pindah': 'badge badge-warning',
+                    'meninggal': 'badge badge-danger'
+                }[member.status || 'aktif'];
+
+                const statusText = {
+                    'aktif': 'Aktif',
+                    'pindah': 'Pindah',
+                    'meninggal': 'Meninggal'
+                }[member.status || 'aktif'];
+
+                // Use status_keluarga if available, otherwise fallback to first member
+                const isKepalaKeluarga = member.status_keluarga === 'kepala_keluarga' || (!member.status_keluarga && index === 0);
+
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>
+                            <strong>${escapeHtml(member.nama)}</strong>
+                            ${isKepalaKeluarga ? '<span class="badge badge-info" style="margin-left: 8px;">Kepala Keluarga</span>' : '<span class="badge badge-secondary" style="margin-left: 8px; background: var(--gray-400);">Anggota</span>'}
+                        </td>
+                        <td>${member.nik || '-'}</td>
+                        <td>${member.pekerjaan || '-'}</td>
+                        <td><span class="${statusClass}">${statusText}</span></td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+            openModal('detailKKModal');
+        }
+        
+        // Edit KK
+        function editKK(userId, nama, noKk, nik, whatsapp, rt, rw, noRumah, status) {
+            document.getElementById('editKKUserId').value = userId;
+            document.getElementById('editKKNKK').value = noKk;
+            document.getElementById('editKKNama').value = nama;
+            document.getElementById('editKKNIK').value = nik;
+            document.getElementById('editKKWhatsApp').value = whatsapp;
+            document.getElementById('editKKRT').value = rt;
+            document.getElementById('editKKRW').value = rw;
+            document.getElementById('editKKNoRumah').value = noRumah;
+            document.getElementById('editKKStatus').value = status;
+            
+            openModal('editKKModal');
+        }
+        
+        // Handle edit KK form submit
+        document.getElementById('editKKForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const userId = document.getElementById('editKKUserId').value;
+            const updatedData = {
+                no_kk: document.getElementById('editKKNKK').value,
+                nama: document.getElementById('editKKNama').value,
+                nik: document.getElementById('editKKNIK').value,
+                whatsapp: document.getElementById('editKKWhatsApp').value,
+                rt: document.getElementById('editKKRT').value,
+                rw: document.getElementById('editKKRW').value,
+                no_rumah: document.getElementById('editKKNoRumah').value,
+                status: document.getElementById('editKKStatus').value
+            };
+            
+            try {
+                const result = await db.updateUser(userId, updatedData);
+                
+                if (result.success) {
+                    alert('✅ Data KK berhasil diupdate!');
+                    closeModal('editKKModal');
+                    loadKKData();
+                } else {
+                    alert('❌ Gagal update: ' + result.message);
+                }
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            }
+        });
+        
+        // Handle add KK form submit
+        document.getElementById('addKKForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const rtRw = formData.get('rt')?.split('/') || ['', ''];
+            
+            const newKK = {
+                nama: document.querySelector('#addKKForm input[placeholder="Nama Kepala Keluarga"]').value,
+                no_kk: document.querySelector('#addKKForm input[placeholder="16 digit No. KK"]').value,
+                nik: document.querySelector('#addKKForm input[placeholder="16 digit NIK"]').value,
+                rt: rtRw[0],
+                rw: rtRw[1],
+                no_rumah: document.querySelector('#addKKForm input[placeholder="Contoh: A-12"]').value,
+                whatsapp: document.querySelector('#addKKForm input[type="tel"]').value,
+                pekerjaan: '-',
+                email: 'kk_' + Date.now() + '@temp.local',
+                password: 'password123',
+                status: 'aktif'
+            };
+            
+            try {
+                const result = await db.register(newKK);
+                
+                if (result.success) {
+                    alert('✅ KK berhasil ditambahkan!');
+                    closeModal('addKKModal');
+                    loadKKData();
+                    e.target.reset();
+                } else {
+                    alert('❌ Gagal menambahkan KK: ' + result.message);
+                }
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            }
+        });
+        
+        // Print KK
+        function printKK() {
+            const element = document.getElementById('kkDetailContent');
+            if (!element) {
+                alert('❌ Error: Detail content not found!');
+                return;
+            }
+            
+            const kkElement = element.querySelector('div[style*="font-size: 1.5rem"]');
+            const kkNumber = kkElement ? kkElement.textContent.trim() : 'KK';
+            
+            const opt = {
+                margin:       [10, 10, 10, 10],
+                filename:     `KK_${kkNumber.replace(/\//g, '-')}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // Show loading
+            const printButton = event.target;
+            const originalText = printButton.innerHTML;
+            printButton.innerHTML = '⏳ Generating PDF...';
+            printButton.disabled = true;
+            
+            console.log('Generating PDF for KK:', kkNumber);
+            
+            // Generate PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                console.log('PDF generated successfully');
+                printButton.innerHTML = originalText;
+                printButton.disabled = false;
+            }).catch(err => {
+                console.error('Error generating PDF:', err);
+                alert('❌ Gagal generate PDF: ' + err.message);
+                printButton.innerHTML = originalText;
+                printButton.disabled = false;
+            });
+        }
+
+        // Add Anggota Keluarga - Show modal
+        function addAnggotaKeluarga(kk, userId, kepalaKeluargaNama) {
+            const user = db.getCurrentUser();
+            
+            // Check if user is admin/staff or owns this KK
+            const isAdmin = user && [USER_ROLES.ADMIN, USER_ROLES.RT, USER_ROLES.RW].includes(user.role);
+            const isOwner = user && user.no_kk === kk;
+            
+            if (!isAdmin && !isOwner) {
+                alert('❌ Anda hanya bisa menambah anggota ke KK Anda sendiri!');
+                return;
+            }
+            
+            // Fill modal with KK data
+            document.getElementById('addAnggotaNoKK').value = kk;
+            document.getElementById('addAnggotaNoKKDisplay').value = kk;
+            document.getElementById('addAnggotaUserId').value = userId;
+            
+            openModal('addAnggotaModal');
+        }
+
+        // Handle add anggota form submit
+        document.getElementById('addAnggotaForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const user = db.getCurrentUser();
+            
+            const requestData = {
+                user_id: parseInt(document.getElementById('addAnggotaUserId').value),
+                no_kk: document.getElementById('addAnggotaNoKK').value,
+                nama_lengkap: document.getElementById('addAnggotaNama').value,
+                nik: document.getElementById('addAnggotaNIK').value,
+                hubungan: document.getElementById('addAnggotaHubungan').value,
+                jenis_kelamin: document.getElementById('addAnggotaJK').value,
+                tempat_lahir: document.getElementById('addAnggotaTempatLahir').value,
+                tanggal_lahir: document.getElementById('addAnggotaTanggalLahir').value,
+                pekerjaan: document.getElementById('addAnggotaPekerjaan').value,
+                alasan: document.getElementById('addAnggotaAlasan').value,
+                dibuat_oleh: user.id
+            };
+            
+            try {
+                const response = await fetch('api/anggota_keluarga.php?action=create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('✅ Request berhasil diajukan! Menunggu persetujuan admin.');
+                    closeModal('addAnggotaModal');
+                    e.target.reset();
+                    // Reload page to show updated data
+                    loadKKData();
+                } else {
+                    alert('❌ Gagal mengajukan request: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error submitting request:', error);
+                alert('❌ Terjadi kesalahan: ' + error.message);
+            }
+        });
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                if (typeof db !== 'undefined') {
+                    db.logout();
+                } else if (typeof auth !== 'undefined') {
+                    auth.logout();
+                }
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+
+        // Load user's requests (for warga)
+        async function loadMyRequests() {
+            const user = db.getCurrentUser();
+            if (!user || [USER_ROLES.ADMIN, USER_ROLES.RT, USER_ROLES.RW].includes(user.role)) {
+                // Don't show for admin
+                return;
+            }
+
+            const section = document.getElementById('myRequestsSection');
+            const content = document.getElementById('myRequestsContent');
+
+            try {
+                const response = await fetch(`api/anggota_keluarga.php?action=get_by_user&user_id=${user.id}`);
+                const result = await response.json();
+
+                if (result.success && result.data && result.data.length > 0) {
+                    section.style.display = 'block';
+                    const requests = result.data;
+                    
+                    let html = `
+                        <div style="overflow-x: auto;">
+                            <table class="table" style="font-size: 0.9rem;">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>No. KK</th>
+                                        <th>Nama Anggota</th>
+                                        <th>Hubungan</th>
+                                        <th>Tanggal</th>
+                                        <th>Status</th>
+                                        <th>Catatan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+
+                    requests.forEach((req, index) => {
+                        const statusClass = {
+                            'pending': 'badge-warning',
+                            'approved': 'badge-success',
+                            'rejected': 'badge-danger'
+                        }[req.status];
+
+                        const statusText = {
+                            'pending': '⏳ Pending',
+                            'approved': '✅ Disetujui',
+                            'rejected': '❌ Ditolak'
+                        }[req.status];
+
+                        html += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${req.no_kk}</td>
+                                <td><strong>${escapeHtml(req.nama_lengkap)}</strong></td>
+                                <td><span class="badge badge-info">${req.hubungan}</span></td>
+                                <td>${formatDate(req.created_at)}</td>
+                                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                                <td>${req.catatan_admin ? escapeHtml(req.catatan_admin) : '-'}</td>
+                            </tr>
+                        `;
+                    });
+
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+
+                    content.innerHTML = html;
+                } else {
+                    section.style.display = 'block';
+                    content.innerHTML = `
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="font-size: 3rem; margin-bottom: 16px;">📭</div>
+                            <div style="color: var(--gray-500); margin-bottom: 16px;">Belum ada request</div>
+                            <div style="font-size: 0.9rem;">Klik tombol "➕ Tambah Anggota" pada KK Anda untuk mengajukan request</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading requests:', error);
+                section.style.display = 'block';
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: var(--gray-500);">
+                        ❌ Error loading requests
+                    </div>
+                `;
+            }
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOMContentLoaded fired');
+
+            if (typeof updateUIForRole === 'function') {
+                updateUIForRole();
+            }
+
+            // Show my requests section for warga
+            const user = db.getCurrentUser();
+            if (user && user.role === USER_ROLES.WARGA) {
+                loadMyRequests();
+            }
+
+            // Small delay to ensure db is loaded
+            setTimeout(() => {
+                loadKKData();
+            }, 100);
+        });
+
+        // Fallback: load data if DOMContentLoaded already fired
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            console.log('Document already loaded, calling loadKKData directly...');
+            setTimeout(loadKKData, 100);
+        }
+    </script>
+</body>
+</html>

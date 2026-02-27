@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengumuman - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="warga.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Warga</span>
+                </a>
+                <a href="kk.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Kartu Keluarga</span>
+                </a>
+                <a href="requests.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">⏳</span>
+                    <span>Request Anggota</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Kas & Iuran</span>
+                </a>
+                <a href="kegiatan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📅</span>
+                    <span>Kegiatan</span>
+                </a>
+                <a href="laporan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📈</span>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Admin RT 001</div>
+                    <div class="sidebar-user-role">Administrator</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Pengumuman</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="notification-btn" onclick="window.location.href='notifikasi.html'">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Announcements Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px;">
+                    <!-- Announcement Card 1 -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 50px; height: 50px; background: rgba(37, 99, 235, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">📢</div>
+                                    <div>
+                                        <h3 style="font-size: 1.1rem; margin-bottom: 4px;">Kerja Bakti Minggu Ini</h3>
+                                        <span class="badge badge-info">Umum</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.85rem; color: var(--gray-500);">15 Feb 2025</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-400);">10:30 WIB</div>
+                                </div>
+                            </div>
+                            <p style="color: var(--gray-600); margin-bottom: 16px; line-height: 1.7;">
+                                Diberitahukan kepada seluruh warga RT 001/RW 001 untuk mengikuti kerja bakti membersihkan selokan dan lingkungan sekitar. 
+                                <br><br>
+                                📅 Hari: Minggu, 18 Februari 2025<br>
+                                ⏰ Waktu: 07:00 WIB<br>
+                                📍 Lokasi: Balai Warga
+                            </p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px; color: var(--gray-500); font-size: 0.9rem;">
+                                    <span>👁️</span>
+                                    <span>125 views</span>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('viewPengumumanModal')">👁️ Lihat</button>
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('editPengumumanModal')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete()">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Announcement Card 2 -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 50px; height: 50px; background: rgba(16, 185, 129, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">💰</div>
+                                    <div>
+                                        <h3 style="font-size: 1.1rem; margin-bottom: 4px;">Pembayaran Iuran Bulan Ini</h3>
+                                        <span class="badge badge-success">Penting</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.85rem; color: var(--gray-500);">14 Feb 2025</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-400);">14:00 WIB</div>
+                                </div>
+                            </div>
+                            <p style="color: var(--gray-600); margin-bottom: 16px; line-height: 1.7;">
+                                Diharapkan kepada seluruh warga untuk membayar iuran kebersihan dan keamanan bulan Februari 2025.
+                                <br><br>
+                                💵 Jumlah: Rp 50.000<br>
+                                📅 Batas: 25 Februari 2025<br>
+                                📍 Pembayaran: Bendahara RT
+                            </p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px; color: var(--gray-500); font-size: 0.9rem;">
+                                    <span>👁️</span>
+                                    <span>98 views</span>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('viewPengumumanModal')">👁️ Lihat</button>
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('editPengumumanModal')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete()">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Announcement Card 3 -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 50px; height: 50px; background: rgba(245, 158, 11, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">📅</div>
+                                    <div>
+                                        <h3 style="font-size: 1.1rem; margin-bottom: 4px;">Rapat RT Bulanan</h3>
+                                        <span class="badge badge-warning">Warga</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.85rem; color: var(--gray-500);">12 Feb 2025</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-400);">09:00 WIB</div>
+                                </div>
+                            </div>
+                            <p style="color: var(--var(--gray-600)); margin-bottom: 16px; line-height: 1.7;">
+                                Undangan rapat bulanan untuk seluruh pengurus RT dan perwakilan warga.
+                                <br><br>
+                                📅 Hari: Sabtu, 17 Februari 2025<br>
+                                ⏰ Waktu: 19:00 WIB<br>
+                                📍 Lokasi: Rumah Pak RT
+                            </p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px; color: var(--gray-500); font-size: 0.9rem;">
+                                    <span>👁️</span>
+                                    <span>76 views</span>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('viewPengumumanModal')">👁️ Lihat</button>
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('editPengumumanModal')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete()">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Announcement Card 4 -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 50px; height: 50px; background: rgba(239, 68, 68, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">⚠️</div>
+                                    <div>
+                                        <h3 style="font-size: 1.1rem; margin-bottom: 4px;">Waspada Demam Berdarah</h3>
+                                        <span class="badge badge-danger">Darurat</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.85rem; color: var(--gray-500);">10 Feb 2025</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-400);">16:45 WIB</div>
+                                </div>
+                            </div>
+                            <p style="color: var(--gray-600); margin-bottom: 16px; line-height: 1.7;">
+                                Diberitahukan agar seluruh warga meningkatkan kewaspadaan terhadap penyakit demam berdarah.
+                                <br><br>
+                                🔸 Lakukan 3M Plus<br>
+                                🔸 Gunakan kelambu<br>
+                                🔸 Segera ke puskesmas jika ada gejala
+                            </p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px; color: var(--gray-500); font-size: 0.9rem;">
+                                    <span>👁️</span>
+                                    <span>200 views</span>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('viewPengumumanModal')">👁️ Lihat</button>
+                                    <button class="btn btn-sm btn-outline" onclick="openModal('editPengumumanModal')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDelete()">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Button (Floating) -->
+                <button class="btn btn-primary btn-lg" onclick="openModal('addPengumumanModal')" style="position: fixed; bottom: 32px; right: 32px; border-radius: 50%; width: 60px; height: 60px; padding: 0; font-size: 1.5rem; box-shadow: var(--shadow-xl);">+</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Pengumuman Modal -->
+    <div class="modal-overlay" id="addPengumumanModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Pengumuman</h3>
+                <button class="modal-close" onclick="closeModal('addPengumumanModal')">&times;</button>
+            </div>
+            <form id="addPengumumanForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Judul Pengumuman</label>
+                        <input type="text" class="form-control" placeholder="Masukkan judul pengumuman" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kategori</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="umum">Umum</option>
+                            <option value="penting">Penting</option>
+                            <option value="warga">Warga</option>
+                            <option value="darurat">Darurat</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Isi Pengumuman</label>
+                        <textarea class="form-control" rows="6" placeholder="Tulis isi pengumuman..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tanggal & Waktu Acara (Opsional)</label>
+                        <input type="datetime-local" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Lokasi (Opsional)</label>
+                        <input type="text" class="form-control" placeholder="Contoh: Balai Warga">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('addPengumumanModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Terbitkan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Pengumuman Modal -->
+    <div class="modal-overlay" id="viewPengumumanModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Detail Pengumuman</h3>
+                <button class="modal-close" onclick="closeModal('viewPengumumanModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <div style="width: 50px; height: 50px; background: rgba(37, 99, 235, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">📢</div>
+                    <div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 4px;">Kerja Bakti Minggu Ini</h3>
+                        <span class="badge badge-info">Umum</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 24px; margin-bottom: 20px; padding: 16px; background: var(--gray-100); border-radius: var(--radius);">
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">Diposting</div>
+                        <div style="font-weight: 500;">15 Feb 2025, 10:30 WIB</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">Oleh</div>
+                        <div style="font-weight: 500;">Admin RT 001</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">Views</div>
+                        <div style="font-weight: 500;">125</div>
+                    </div>
+                </div>
+                <div style="line-height: 1.8; color: var(--gray-700);">
+                    <p>Diberitahukan kepada seluruh warga RT 001/RW 001 untuk mengikuti kerja bakti membersihkan selokan dan lingkungan sekitar.</p>
+                    <br>
+                    <p><strong>📅 Hari:</strong> Minggu, 18 Februari 2025</p>
+                    <p><strong>⏰ Waktu:</strong> 07:00 WIB</p>
+                    <p><strong>📍 Lokasi:</strong> Balai Warga</p>
+                    <br>
+                    <p>Diharapkan kehadiran seluruh warga untuk berpartisipasi. Alat kebersihan akan disediakan oleh panitia.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal('viewPengumumanModal')">Tutup</button>
+                <button type="button" class="btn btn-primary">📤 Bagikan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Pengumuman Modal -->
+    <div class="modal-overlay" id="editPengumumanModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Pengumuman</h3>
+                <button class="modal-close" onclick="closeModal('editPengumumanModal')">&times;</button>
+            </div>
+            <form id="editPengumumanForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Judul Pengumuman</label>
+                        <input type="text" class="form-control" value="Kerja Bakti Minggu Ini" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kategori</label>
+                        <select class="form-control" required>
+                            <option value="umum" selected>Umum</option>
+                            <option value="penting">Penting</option>
+                            <option value="warga">Warga</option>
+                            <option value="darurat">Darurat</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Isi Pengumuman</label>
+                        <textarea class="form-control" rows="6" required>Diberitahukan kepada seluruh warga RT 001/RW 001 untuk mengikuti kerja bakti membersihkan selokan dan lingkungan sekitar.</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('editPengumumanModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                auth.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

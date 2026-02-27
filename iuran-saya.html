@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iuran Saya - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="warga-saya.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👤</span>
+                    <span>Data Saya</span>
+                </a>
+                <a href="keluarga-saya.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🏠</span>
+                    <span>Keluarga Saya</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran-saya.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Iuran Saya</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="userAvatar">U</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userName">User</div>
+                    <div class="sidebar-user-role" id="userRole">Warga</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Iuran Saya</h1>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div id="contentArea">
+                    <!-- Content will be loaded by JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        requireAuth([USER_ROLES.WARGA]);
+
+        function loadIuranData() {
+            const user = auth.getCurrentUser();
+            if (!user) return;
+
+            const contentArea = document.getElementById('contentArea');
+            
+            // Mock iuran data
+            const iuranList = [
+                { bulan: 'Februari 2025', jenis: 'Iuran Kebersihan', nominal: 50000, status: 'lunas', tanggalBayar: '15 Feb 2025' },
+                { bulan: 'Februari 2025', jenis: 'Iuran Keamanan', nominal: 30000, status: 'lunas', tanggalBayar: '15 Feb 2025' },
+                { bulan: 'Januari 2025', jenis: 'Iuran Kebersihan', nominal: 50000, status: 'lunas', tanggalBayar: '10 Jan 2025' },
+                { bulan: 'Januari 2025', jenis: 'Iuran Keamanan', nominal: 30000, status: 'lunas', tanggalBayar: '10 Jan 2025' },
+            ];
+            
+            const totalLunas = iuranList.filter(i => i.status === 'lunas').reduce((sum, i) => sum + i.nominal, 0);
+            
+            contentArea.innerHTML = `
+                <div class="alert alert-success" style="margin-bottom: 24px;">
+                    <strong>✅ Alhamdulillah:</strong> Semua iuran Anda sudah lunas! Terima kasih telah mendukung lingkungan kita.
+                </div>
+
+                <!-- Summary Card -->
+                <div class="dashboard-stats" style="margin-bottom: 24px;">
+                    <div class="stat-card">
+                        <div class="stat-card-icon green">✅</div>
+                        <div class="stat-card-content">
+                            <h3>Rp ${totalLunas.toLocaleString('id-ID')}</h3>
+                            <p>Total Bayar (2025)</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon blue">📅</div>
+                        <div class="stat-card-content">
+                            <h3>${iuranList.length}</h3>
+                            <p>Pembayaran</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon orange">💳</div>
+                        <div class="stat-card-content">
+                            <h3>Lunas</div>
+                            <p>Status Bulan Ini</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment History -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="card-title">Riwayat Pembayaran</h3>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Bulan</th>
+                                <th>Jenis Iuran</th>
+                                <th>Nominal</th>
+                                <th>Tanggal Bayar</th>
+                                <th>Status</th>
+                                <th>Kwitansi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${iuranList.map(item => `
+                                <tr>
+                                    <td>${item.bulan}</td>
+                                    <td>${item.jenis}</td>
+                                    <td>Rp ${item.nominal.toLocaleString('id-ID')}</td>
+                                    <td>${item.tanggalBayar}</td>
+                                    <td><span class="badge badge-success">Lunas</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="alert('Kwitansi akan diunduh...')">📥 Download</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Payment Info -->
+                <div class="card" style="margin-top: 24px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Info Pembayaran</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; gap: 16px;">
+                            <div style="display: flex; align-items: start; gap: 16px; padding: 16px; background: var(--gray-100); border-radius: var(--radius);">
+                                <span style="font-size: 2rem;">💰</span>
+                                <div>
+                                    <h4 style="margin-bottom: 8px;">Jadwal Pembayaran</h4>
+                                    <p style="color: var(--gray-600); margin-bottom: 8px;">
+                                        Pembayaran iuran dilakukan setiap bulan paling lambat tanggal 25.
+                                    </p>
+                                    <ul style="color: var(--gray-600); padding-left: 20px;">
+                                        <li>Iuran Kebersihan: Rp 50.000/bulan</li>
+                                        <li>Iuran Keamanan: Rp 30.000/bulan</li>
+                                        <li>Iuran Sampah: Rp 25.000/bulan (opsional)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: start; gap: 16px; padding: 16px; background: var(--gray-100); border-radius: var(--radius);">
+                                <span style="font-size: 2rem;">📍</span>
+                                <div>
+                                    <h4 style="margin-bottom: 8px;">Lokasi Pembayaran</h4>
+                                    <p style="color: var(--gray-600);">
+                                        Pembayaran dapat dilakukan di:<br>
+                                        • Rumah Bendahara RT (Ibu Siti - No. B-05)<br>
+                                        • Transfer Bank: BCA 1234567890 a.n RT 001/RW 001
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Update sidebar
+            document.getElementById('userName').textContent = user.nama;
+            document.getElementById('userAvatar').textContent = user.nama.charAt(0).toUpperCase();
+            document.getElementById('userRole').textContent = 'Warga';
+        }
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                auth.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadIuranData);
+    </script>
+</body>
+</html>

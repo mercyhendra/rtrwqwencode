@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keluarga Saya - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO<br><span style="font-size: 0.75em; font-weight: 500; opacity: 0.8;">REGENCY</span></span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="warga-saya.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👤</span>
+                    <span>Data Saya</span>
+                </a>
+                <a href="keluarga-saya.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">🏠</span>
+                    <span>Keluarga Saya</span>
+                </a>
+                <div style="margin: var(--space-4) var(--space-6); padding-top: var(--space-4); border-top: 1px solid rgba(255,255,255,0.05);">
+                    <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate-500); font-weight: 600;">Komunikasi</span>
+                </div>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <div style="margin: var(--space-4) var(--space-6); padding-top: var(--space-4); border-top: 1px solid rgba(255,255,255,0.05);">
+                    <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate-500); font-weight: 600;">Layanan</span>
+                </div>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran-saya.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Iuran Saya</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="userAvatar">U</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userName">User</div>
+                    <div class="sidebar-user-role" id="userRole">Warga</div>
+                </div>
+                <button onclick="logout()" class="btn btn-ghost btn-icon" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <div>
+                        <h1 class="page-title">Keluarga Saya</h1>
+                        <p class="card-subtitle">Kelola data anggota keluarga Anda</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div id="contentArea">
+                    <!-- Content will be loaded by JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Require authentication for warga
+        requireAuth([USER_ROLES.WARGA]);
+
+        // Load family data from database
+        async function loadFamilyData() {
+            const user = db.getCurrentUser();
+            if (!user) return;
+
+            const contentArea = document.getElementById('contentArea');
+
+            try {
+                console.log('=== LOAD FAMILY DATA ===');
+                console.log('Current user:', user);
+                console.log('User no_kk:', user.no_kk);
+
+                // Fetch all users from database
+                const allUsers = await db.getAllUsers();
+                console.log('All users:', allUsers);
+
+                // Filter by user's no_kk AND sort by ID ASC (Kepala Keluarga first = smallest ID)
+                const familyMembers = allUsers
+                    .filter(u => u.no_kk === user.no_kk)
+                    .sort((a, b) => parseInt(a.id) - parseInt(b.id));
+
+                console.log('Sorted family members:', familyMembers);
+                console.log('Total family members:', familyMembers.length);
+
+                if (familyMembers.length === 0) {
+                    contentArea.innerHTML = `
+                        <div class="alert alert-warning" style="margin-bottom: 24px;">
+                            <strong>⚠️ Peringatan:</strong> Data keluarga tidak ditemukan. Hubungi admin untuk bantuan.
+                        </div>
+                    `;
+                    return;
+                }
+
+                contentArea.innerHTML = `
+                    <div class="alert alert-info fade-in-up" style="margin-bottom: var(--space-6);">
+                        <strong>ℹ️ Info:</strong> Ini adalah data keluarga Anda dengan No. KK ${user.no_kk || '-'}.
+                        Anda dapat mengubah status anggota keluarga dengan dropdown di bawah.
+                    </div>
+
+                    <!-- Family Members Table -->
+                    <div class="table-container fade-in-up">
+                        <div class="table-header">
+                            <div>
+                                <h3 class="card-title">Daftar Anggota Keluarga</h3>
+                                <p class="card-subtitle">Total ${familyMembers.length} anggota</p>
+                            </div>
+                            <button class="btn btn-sm btn-outline" onclick="loadFamilyData()">🔄 Refresh</button>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>NIK</th>
+                                    <th>Status dalam KK</th>
+                                    <th>Pekerjaan</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${familyMembers.map((member, index) => {
+                                    const statusClass = {
+                                        'aktif': 'badge-success',
+                                        'pindah': 'badge-warning',
+                                        'meninggal': 'badge-danger'
+                                    }[member.status || 'aktif'];
+
+                                    const statusText = {
+                                        'aktif': 'Aktif',
+                                        'pindah': 'Pindah',
+                                        'meninggal': 'Meninggal'
+                                    }[member.status || 'aktif'];
+
+                                    const initial = member.nama ? member.nama.charAt(0).toUpperCase() : 'M';
+
+                                    return `
+                                        <tr>
+                                            <td style="font-weight: 600; color: var(--slate-600);">${index + 1}</td>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: var(--space-3);">
+                                                    <div style="width: 40px; height: 40px; background: ${member.status_keluarga === 'kepala_keluarga' ? 'var(--primary-gradient)' : 'var(--slate-400)'}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">${initial}</div>
+                                                    <div>
+                                                        <div style="font-weight: 600; color: var(--slate-800);">${escapeHtml(member.nama)}</div>
+                                                        ${member.status_keluarga === 'kepala_keluarga' ? '<span style="font-size: 0.75rem; color: var(--primary-color); font-weight: 600;">• Kepala Keluarga</span>' : ''}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="font-family: monospace; color: var(--slate-600);">${member.nik || '-'}</td>
+                                            <td>
+                                                <select onchange="updateStatusKeluarga(${member.id}, this.value)"
+                                                        style="padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--slate-300); font-size: 0.875rem; cursor: pointer; background: white; color: var(--slate-700); font-weight: 500;">
+                                                    <option value="kepala_keluarga" ${member.status_keluarga === 'kepala_keluarga' ? 'selected' : ''}>Kepala Keluarga</option>
+                                                    <option value="anggota" ${member.status_keluarga === 'anggota' ? 'selected' : ''}>Anggota</option>
+                                                </select>
+                                            </td>
+                                            <td><span style="color: var(--slate-600);">${member.pekerjaan || '-'}</span></td>
+                                            <td><span class="badge ${statusClass}">${statusText}</span></td>
+                                            <td style="text-align: right;">
+                                                <button class="btn btn-sm btn-ghost" onclick="alert('Fitur edit data akan segera ditambahkan')" title="Edit data">✏️</button>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Info Card -->
+                    <div class="card fade-in-up" style="margin-top: var(--space-6);">
+                        <div class="card-body">
+                            <div style="display: flex; align-items: start; gap: var(--space-4);">
+                                <span style="font-size: 2.5rem; line-height: 1;">ℹ️</span>
+                                <div>
+                                    <h4 style="margin-bottom: var(--space-2); color: var(--slate-800);">Perlu Perubahan Data?</h4>
+                                    <p style="color: var(--slate-600); margin-bottom: var(--space-4); line-height: 1.7;">
+                                        Untuk menambah atau mengubah data anggota keluarga, silakan mengajukan request di halaman Kartu Keluarga. Request akan diproses oleh admin RT/RW.
+                                    </p>
+                                    <a href="kk.html" class="btn btn-primary">📋 Kartu Keluarga</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Update sidebar
+                document.getElementById('userName').textContent = user.nama;
+                document.getElementById('userAvatar').textContent = user.nama.charAt(0).toUpperCase();
+                document.getElementById('userRole').textContent = 'Warga';
+
+            } catch (error) {
+                console.error('Error loading family data:', error);
+                contentArea.innerHTML = `
+                    <div class="alert alert-error fade-in-up">
+                        <strong>❌ Error:</strong> Gagal memuat data keluarga: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Update status_keluarga
+        async function updateStatusKeluarga(userId, newStatus) {
+            if (!confirm(`Ubah status anggota ini menjadi "${newStatus === 'kepala_keluarga' ? 'Kepala Keluarga' : 'Anggota'}"?`)) {
+                loadFamilyData(); // Reload to reset dropdown
+                return;
+            }
+
+            try {
+                const response = await fetch('api/users.php?action=update', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: userId,
+                        status_keluarga: newStatus
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(`✅ Status berhasil diubah menjadi ${newStatus === 'kepala_keluarga' ? 'Kepala Keluarga' : 'Anggota'}!`);
+                    loadFamilyData(); // Reload data
+                } else {
+                    alert('❌ Gagal update status: ' + result.message);
+                    loadFamilyData(); // Reload to reset dropdown
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('❌ Terjadi kesalahan: ' + error.message);
+                loadFamilyData(); // Reload to reset dropdown
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            if (!text) return '-';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                db.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', loadFamilyData);
+    </script>
+</body>
+</html>

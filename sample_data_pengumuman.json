@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "judul": "Kerja Bakti Minggu Ini",
+    "kategori": "umum",
+    "kategori_label": "Umum",
+    "kategori_icon": "📢",
+    "kategori_color": "rgba(37, 99, 235, 0.1)",
+    "isi": "Diberitahukan kepada seluruh warga RT 001/RW 001 untuk mengikuti kerja bakti membersihkan selokan dan lingkungan sekitar.\n\n📅 Hari: Minggu, 18 Februari 2025\n⏰ Waktu: 07:00 WIB\n📍 Lokasi: Balai Warga",
+    "tanggal_event": "2025-02-18 07:00:00",
+    "lokasi": "Balai Warga",
+    "diposting_oleh": "Admin RT 001",
+    "tanggal_post": "2025-02-15 10:30:00",
+    "views": 125
+  },
+  {
+    "id": 2,
+    "judul": "Pembayaran Iuran Bulan Ini",
+    "kategori": "penting",
+    "kategori_label": "Penting",
+    "kategori_icon": "💰",
+    "kategori_color": "rgba(16, 185, 129, 0.1)",
+    "isi": "Diharapkan kepada seluruh warga untuk membayar iuran kebersihan dan keamanan bulan Februari 2025.\n\n💵 Jumlah: Rp 50.000\n📅 Batas: 25 Februari 2025\n📍 Pembayaran: Bendahara RT",
+    "tanggal_event": "2025-02-25 23:59:59",
+    "lokasi": "Bendahara RT",
+    "diposting_oleh": "Admin RT 001",
+    "tanggal_post": "2025-02-14 14:00:00",
+    "views": 98
+  },
+  {
+    "id": 3,
+    "judul": "Rapat RT Bulanan",
+    "kategori": "warga",
+    "kategori_label": "Warga",
+    "kategori_icon": "📅",
+    "kategori_color": "rgba(245, 158, 11, 0.1)",
+    "isi": "Undangan rapat bulanan untuk seluruh pengurus RT dan perwakilan warga.\n\n📅 Hari: Sabtu, 17 Februari 2025\n⏰ Waktu: 19:00 WIB\n📍 Lokasi: Rumah Pak RT",
+    "tanggal_event": "2025-02-17 19:00:00",
+    "lokasi": "Rumah Pak RT",
+    "diposting_oleh": "Admin RT 001",
+    "tanggal_post": "2025-02-12 09:00:00",
+    "views": 76
+  },
+  {
+    "id": 4,
+    "judul": "Waspada Demam Berdarah",
+    "kategori": "darurat",
+    "kategori_label": "Darurat",
+    "kategori_icon": "⚠️",
+    "kategori_color": "rgba(239, 68, 68, 0.1)",
+    "isi": "Diberitahukan agar seluruh warga meningkatkan kewaspadaan terhadap penyakit demam berdarah.\n\n🔸 Lakukan 3M Plus\n🔸 Gunakan kelambu\n🔸 Segera ke puskesmas jika ada gejala",
+    "tanggal_event": null,
+    "lokasi": null,
+    "diposting_oleh": "Admin RT 001",
+    "tanggal_post": "2025-02-10 16:45:00",
+    "views": 200
+  }
+]

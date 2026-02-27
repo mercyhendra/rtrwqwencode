@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-left">
+            <h1>Bergabunglah Bersama Kami!</h1>
+            <p>Daftar untuk mengakses sistem VILLA BINTARO REGENCY RT/RW Digital</p>
+            <ul class="auth-features">
+                <li>
+                    <div class="auth-feature-icon">✓</div>
+                    <span>Akses informasi warga terbaru</span>
+                </li>
+                <li>
+                    <div class="auth-feature-icon">✓</div>
+                    <span>Terima pengumuman secara real-time</span>
+                </li>
+                <li>
+                    <div class="auth-feature-icon">✓</div>
+                    <span>Urus administrasi dengan mudah</span>
+                </li>
+                <li>
+                    <div class="auth-feature-icon">✓</div>
+                    <span>Partisipasi dalam kegiatan lingkungan</span>
+                </li>
+            </ul>
+        </div>
+        <div class="auth-right">
+            <div class="auth-header">
+                <h2>Daftar Akun Baru</h2>
+                <p>Lengkapi form di bawah untuk membuat akun</p>
+            </div>
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label class="form-label" for="nama">Nama Lengkap (Kepala Keluarga)</label>
+                    <input type="text" id="nama" class="form-control" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="noKK">Nomor Kartu Keluarga (KK)</label>
+                    <input type="text" id="noKK" class="form-control" placeholder="16 digit No. KK" pattern="[0-9]{16}" required>
+                    <small style="color: var(--gray-500); font-size: 0.85rem;">Setiap KK hanya bisa mendaftar 1 kali</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="nik">NIK Kepala Keluarga</label>
+                    <input type="text" id="nik" class="form-control" placeholder="16 digit NIK" pattern="[0-9]{16}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="rt">RT/RW</label>
+                    <select id="rt" class="form-control" required>
+                        <option value="">Pilih RT/RW</option>
+                        <option value="001/001">RT 001 / RW 001</option>
+                        <option value="002/001">RT 002 / RW 001</option>
+                        <option value="003/001">RT 003 / RW 001</option>
+                        <option value="004/002">RT 004 / RW 002</option>
+                        <option value="005/002">RT 005 / RW 002</option>
+                        <option value="006/002">RT 006 / RW 002</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="noRumah">Nomor Rumah</label>
+                    <input type="text" id="noRumah" class="form-control" placeholder="Contoh: A-12" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="whatsapp">Nomor WhatsApp</label>
+                    <input type="tel" id="whatsapp" class="form-control" placeholder="08xxxxxxxxxx (format: 628xxx)" pattern="[0-9]{10,13}" required>
+                    <small style="color: var(--gray-500); font-size: 0.85rem;">Untuk notifikasi penting</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="pekerjaan">Pekerjaan</label>
+                    <input type="text" id="pekerjaan" class="form-control" placeholder="Contoh: Wiraswasta" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="nama@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Minimal 8 karakter" minlength="8" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">Konfirmasi Password</label>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="Ulangi password" required>
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="agree" required>
+                        <span style="font-size: 0.9rem; color: var(--gray-600);">Saya setuju dengan <a href="#" style="color: var(--primary-color);">Syarat & Ketentuan</a> yang berlaku</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Daftar</button>
+            </form>
+            <div class="auth-footer">
+                <p>Sudah punya akun? <a href="login.html">Login sekarang</a></p>
+                <p style="margin-top: 16px;"><a href="index.html">← Kembali ke beranda</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script>
+        // Redirect if already logged in
+        if (db.isLoggedIn()) {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Handle registration
+        document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nama = document.getElementById('nama').value;
+            const noKK = document.getElementById('noKK').value;
+            const nik = document.getElementById('nik').value;
+            const rt = document.getElementById('rt').value;
+            const noRumah = document.getElementById('noRumah').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            const pekerjaan = document.getElementById('pekerjaan').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const agree = document.getElementById('agree').checked;
+
+            console.log('=== FORM DATA ===');
+            console.log('Nama:', nama);
+            console.log('No KK:', noKK);
+            console.log('NIK:', nik);
+            console.log('RT:', rt);
+            console.log('No Rumah:', noRumah);
+            console.log('WhatsApp:', whatsapp);
+            console.log('Pekerjaan:', pekerjaan);
+            console.log('Email:', email);
+            console.log('Password:', password);
+            console.log('Agree:', agree);
+
+            // Validation
+            if (!agree) {
+                alert('Anda harus menyetujui Syarat & Ketentuan!');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Password tidak cocok!');
+                return;
+            }
+
+            if (password.length < 8) {
+                alert('Password minimal 8 karakter!');
+                return;
+            }
+
+            if (noKK.length !== 16 || !/^\d+$/.test(noKK)) {
+                alert('Nomor KK harus 16 digit angka!');
+                return;
+            }
+
+            if (nik.length !== 16 || !/^\d+$/.test(nik)) {
+                alert('NIK harus 16 digit angka!');
+                return;
+            }
+
+            console.log('=== BEFORE REGISTER ===');
+            
+            // Register user via API
+            const result = await db.register({
+                nama,
+                no_kk: noKK,
+                nik,
+                rt,
+                rw: rt.split('/')[1] || '',
+                no_rumah: noRumah,
+                whatsapp,
+                pekerjaan,
+                email,
+                password,
+                status: 'aktif'
+            });
+
+            console.log('=== AFTER REGISTER ===');
+            console.log('Register result:', result);
+            
+            if (result.success) {
+                alert('✅ Registrasi berhasil! Silakan login dengan akun Anda.');
+                window.location.href = 'login.html';
+            } else {
+                alert('❌ Registrasi gagal: ' + result.message);
+            }
+        });
+    </script>
+</body>
+</html>

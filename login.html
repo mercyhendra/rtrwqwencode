@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-left">
+            <h1 style="font-family: 'Playfair Display', serif;">Selamat Datang Kembali!</h1>
+            <p>Masuk untuk mengelola sistem VILLA BINTARO REGENCY RT/RW Digital Anda</p>
+            <ul class="auth-features">
+                <li>
+                    <div class="auth-feature-icon">✓</div>
+                    <span>Kelola data warga dengan mudah</span>
+                </li>
+                <li>
+                    <div class="auth-feature-icon">✓</div>
+                    <span>Buat pengumuman untuk warga</span>
+                </li>
+                <li>
+                    <div class="auth-feature-icon">✓</div>
+                    <span>Pantau iuran warga secara transparan</span>
+                </li>
+                <li>
+                    <div class="auth-feature-icon">✓</div>
+                    <span>Kelola kegiatan lingkungan</span>
+                </li>
+            </ul>
+        </div>
+        <div class="auth-right">
+            <div class="auth-header">
+                <h2 style="font-family: 'Playfair Display', serif;">Login</h2>
+                <p>Masukkan kredensial Anda untuk masuk</p>
+            </div>
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="nama@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+                    <label style="display: flex; align-items: center; gap: var(--space-2); cursor: pointer;">
+                        <input type="checkbox" id="remember">
+                        <span style="font-size: 0.9rem; color: var(--slate-600);">Ingat saya</span>
+                    </label>
+                    <a href="#" style="color: var(--primary-color); font-size: 0.9rem; font-weight: 500;">Lupa password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: var(--space-4); font-size: 1rem;">Masuk</button>
+            </form>
+            <div class="auth-footer">
+                <p>Belum punya akun? <a href="register.html">Daftar sekarang</a></p>
+                <p style="margin-top: var(--space-4);"><a href="index.html">← Kembali ke beranda</a></p>
+                <div style="margin-top: var(--space-6); padding: var(--space-4); background: var(--slate-50); border-radius: var(--radius-md); font-size: 0.85rem; border: 1px solid var(--slate-100);">
+                    <strong>📝 Demo Login:</strong><br>
+                    <div style="margin-top: var(--space-2); color: var(--slate-600);">
+                        <strong>Admin:</strong> admin@rtrw.com / admin123<br>
+                        <strong>RT:</strong> rt@rtrw.com / rt123<br>
+                        <strong>Warga:</strong> warga@rtrw.com / warga123
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script>
+        // Redirect if already logged in
+        if (db.isLoggedIn()) {
+            const user = db.getCurrentUser();
+            if (user.role === 'warga') {
+                window.location.href = 'warga-saya.html';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+        }
+
+        // Handle login
+        document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            
+            const result = await db.login(email, password);
+            
+            if (result.success) {
+                if (remember) {
+                    localStorage.setItem('rememberedEmail', email);
+                } else {
+                    localStorage.removeItem('rememberedEmail');
+                }
+                
+                // Redirect based on role
+                if (result.user.role === 'warga') {
+                    window.location.href = 'warga-saya.html';
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
+            } else {
+                alert('Login gagal: ' + result.message);
+            }
+        });
+
+        // Load remembered email
+        const rememberedEmail = localStorage.getItem('rememberedEmail');
+        if (rememberedEmail) {
+            document.getElementById('email').value = rememberedEmail;
+            document.getElementById('remember').checked = true;
+        }
+    </script>
+</body>
+</html>

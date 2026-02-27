@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Anggota Keluarga - Admin</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="warga.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Warga</span>
+                </a>
+                <a href="kk.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Kartu Keluarga</span>
+                </a>
+                <a href="requests.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">⏳</span>
+                    <span>Request Anggota</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Kas & Iuran</span>
+                </a>
+                <a href="kegiatan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📅</span>
+                    <span>Kegiatan</span>
+                </a>
+                <a href="laporan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📈</span>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="userAvatar">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userName">Admin</div>
+                    <div class="sidebar-user-role" id="userRole">Administrator</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Request Anggota Keluarga</h1>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Stats -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-card-icon orange">⏳</div>
+                        <div class="stat-card-content">
+                            <h3 id="pendingCount">0</h3>
+                            <p>Pending</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon green">✅</div>
+                        <div class="stat-card-content">
+                            <h3 id="approvedCount">0</h3>
+                            <p>Disetujui</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon red">❌</div>
+                        <div class="stat-card-content">
+                            <h3 id="rejectedCount">0</h3>
+                            <p>Ditolak</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Requests Table -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="card-title">Daftar Request</h3>
+                        <div style="display: flex; gap: 8px;">
+                            <select class="form-control" id="filterStatus" style="width: 150px;" onchange="loadRequests()">
+                                <option value="">Semua Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Disetujui</option>
+                                <option value="rejected">Ditolak</option>
+                            </select>
+                            <button class="btn btn-sm btn-outline" onclick="loadRequests()">🔄 Refresh</button>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Pemohon</th>
+                                <th>No. KK</th>
+                                <th>Nama Anggota Baru</th>
+                                <th>Hubungan</th>
+                                <th>Tanggal Request</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requestsTableBody">
+                            <!-- Data will be loaded by JavaScript -->
+                        </tbody>
+                    </table>
+                    <div class="table-header" style="border-top: 1px solid var(--gray-200); padding: 12px 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.9rem; color: var(--gray-600);">
+                                Total: <strong id="totalCount">0</strong> request
+                            </span>
+                            <button class="btn btn-sm btn-danger" onclick="deleteAllRejected()" data-requires-role="admin">
+                                🗑️ Hapus Semua Ditolak
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Detail Request Modal -->
+    <div class="modal-overlay" id="detailRequestModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Detail Request</h3>
+                <button class="modal-close" onclick="closeModal('detailRequestModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="detailRequestContent">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+            <div class="modal-footer" id="actionButtons">
+                <button type="button" class="btn btn-outline" onclick="closeModal('detailRequestModal')">Tutup</button>
+                <button type="button" class="btn btn-danger" onclick="rejectRequest()">❌ Tolak</button>
+                <button type="button" class="btn btn-success" onclick="approveRequest()">✅ Setujui</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Require authentication for admin/staff only
+        requireAuth([USER_ROLES.ADMIN, USER_ROLES.RT, USER_ROLES.RW]);
+
+        let currentRequestId = null;
+        let allRequests = [];
+
+        // Load requests
+        async function loadRequests() {
+            const tbody = document.getElementById('requestsTableBody');
+            if (!tbody) return;
+
+            try {
+                console.log('=== LOADING REQUESTS ===');
+                const response = await fetch('api/anggota_keluarga.php?action=get_all');
+                const result = await response.json();
+
+                console.log('API Response:', result);
+
+                if (result.success) {
+                    allRequests = result.data || [];
+                    console.log('All requests:', allRequests);
+                    console.log('Number of requests:', allRequests.length);
+
+                    // Filter by status
+                    const filterStatus = document.getElementById('filterStatus').value;
+                    let requests = allRequests;
+                    if (filterStatus) {
+                        requests = allRequests.filter(r => r.status === filterStatus);
+                    }
+
+                    console.log('Filtered requests:', requests);
+
+                    // Update stats
+                    updateStats();
+
+                    if (requests.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 40px; color: var(--gray-500);">
+                                    ${filterStatus ? `Tidak ada request dengan status "${filterStatus}"` : 'Belum ada request'}
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    tbody.innerHTML = requests.map((req, index) => {
+                        const statusClass = {
+                            'pending': 'badge-warning',
+                            'approved': 'badge-success',
+                            'rejected': 'badge-danger'
+                        }[req.status];
+
+                        const statusText = {
+                            'pending': 'Pending',
+                            'approved': 'Disetujui',
+                            'rejected': 'Ditolak'
+                        }[req.status];
+
+                        return `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>
+                                    <div>
+                                        <div style="font-weight: 500;">${escapeHtml(req.pemohon_nama)}</div>
+                                        <div style="font-size: 0.85rem; color: var(--gray-500);">${escapeHtml(req.pemohon_email)}</div>
+                                    </div>
+                                </td>
+                                <td>${req.no_kk || '-'}</td>
+                                <td><strong>${escapeHtml(req.nama_lengkap)}</strong></td>
+                                <td><span class="badge badge-info">${req.hubungan}</span></td>
+                                <td>${formatDate(req.created_at)}</td>
+                                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="showDetailRequest(${req.id})">👁️ Detail</button>
+                                    ${req.status === 'pending' ? `
+                                        <button class="btn btn-sm btn-success" onclick="approveRequestDirect(${req.id})">✅</button>
+                                        <button class="btn btn-sm btn-danger" onclick="rejectRequestDirect(${req.id})">❌</button>
+                                    ` : ''}
+                                    <button class="btn btn-sm btn-danger" onclick="deleteRequestDirect(${req.id})" title="Hapus request">🗑️</button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                } else {
+                    throw new Error(result.message || 'Failed to load requests');
+                }
+            } catch (error) {
+                console.error('❌ Error loading requests:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: var(--danger-color);">
+                            ❌ Error: ${error.message}<br>
+                            <small style="color: var(--gray-500);">Pastikan tabel anggota_keluarga_request sudah dibuat di database</small>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Update stats
+        function updateStats() {
+            const pending = allRequests.filter(r => r.status === 'pending').length;
+            const approved = allRequests.filter(r => r.status === 'approved').length;
+            const rejected = allRequests.filter(r => r.status === 'rejected').length;
+
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('approvedCount').textContent = approved;
+            document.getElementById('rejectedCount').textContent = rejected;
+            document.getElementById('totalCount').textContent = allRequests.length;
+        }
+
+        // Show detail request
+        function showDetailRequest(requestId) {
+            const request = allRequests.find(r => r.id === requestId);
+            if (!request) return;
+
+            currentRequestId = requestId;
+
+            const content = document.getElementById('detailRequestContent');
+            const actionButtons = document.getElementById('actionButtons');
+
+            const statusClass = {
+                'pending': 'badge-warning',
+                'approved': 'badge-success',
+                'rejected': 'badge-danger'
+            }[request.status];
+
+            const statusText = {
+                'pending': 'Pending',
+                'approved': 'Disetujui',
+                'rejected': 'Ditolak'
+            }[request.status];
+
+            content.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h4 style="font-size: 1.1rem;">Request Penambahan Anggota</h4>
+                        <span class="badge ${statusClass}">${statusText}</span>
+                    </div>
+                </div>
+
+                <div style="background: var(--gray-100); padding: 16px; border-radius: var(--radius); margin-bottom: 20px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">Pemohon</div>
+                            <div style="font-weight: 600;">${escapeHtml(request.pemohon_nama)}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">Email</div>
+                            <div style="font-weight: 600;">${escapeHtml(request.pemohon_email)}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">No. KK</div>
+                            <div style="font-weight: 600;">${request.no_kk}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">Tanggal Request</div>
+                            <div style="font-weight: 600;">${formatDate(request.created_at)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="margin-bottom: 12px; font-size: 1rem;">Data Anggota Baru</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">Nama Lengkap</div>
+                        <div style="font-weight: 600;">${escapeHtml(request.nama_lengkap)}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">NIK</div>
+                        <div style="font-weight: 600;">${request.nik || '-'}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">Hubungan</div>
+                        <div style="font-weight: 600;">${request.hubungan}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">Jenis Kelamin</div>
+                        <div style="font-weight: 600;">${request.jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan'}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">Tempat, Tanggal Lahir</div>
+                        <div style="font-weight: 600;">${request.tempat_lahir || '-'}, ${formatDateSimple(request.tanggal_lahir)}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500);">Pekerjaan</div>
+                        <div style="font-weight: 600;">${request.pekerjaan || '-'}</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 8px;">Alasan Penambahan</div>
+                    <p style="color: var(--gray-700); line-height: 1.6; background: var(--gray-100); padding: 12px; border-radius: var(--radius);">
+                        ${request.alasan || '-'}
+                    </p>
+                </div>
+
+                ${request.catatan_admin ? `
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 8px;">Catatan Admin</div>
+                        <p style="color: var(--gray-700); line-height: 1.6; background: var(--gray-100); padding: 12px; border-radius: var(--radius);">
+                            ${escapeHtml(request.catatan_admin)}
+                        </p>
+                    </div>
+                ` : ''}
+            `;
+
+            // Show/hide action buttons based on status
+            if (request.status === 'pending') {
+                actionButtons.style.display = 'flex';
+            } else {
+                actionButtons.style.display = 'none';
+            }
+
+            openModal('detailRequestModal');
+        }
+
+        // Approve request
+        async function approveRequest() {
+            const catatan = prompt('Catatan untuk pemohon (opsional):', 'Request disetujui. Data akan ditambahkan ke sistem.');
+            if (catatan === null) return; // User cancelled
+
+            const addToUsers = confirm('Tambahkan anggota ini ke database warga?\n\nJika YA: Anggota akan ditambahkan ke Kartu Keluarga dengan no_kk yang sama.\nJika TIDAK: Hanya status request yang berubah menjadi approved.');
+            
+            await processRequest('approve', catatan, addToUsers);
+        }
+
+        // Reject request
+        async function rejectRequest() {
+            const catatan = prompt('Alasan penolakan:', 'Request ditolak karena data tidak lengkap.');
+            if (catatan === null) return; // User cancelled
+
+            await processRequest('reject', catatan);
+        }
+
+        // Direct approve/reject from table
+        async function approveRequestDirect(requestId) {
+            currentRequestId = requestId;
+            await approveRequest();
+        }
+
+        async function rejectRequestDirect(requestId) {
+            currentRequestId = requestId;
+            await rejectRequest();
+        }
+
+        // Process request (approve/reject)
+        async function processRequest(action, catatan, addToUsers = false) {
+            if (!currentRequestId) return;
+
+            try {
+                const response = await fetch(`api/anggota_keluarga.php?action=${action}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: currentRequestId,
+                        catatan: catatan,
+                        add_to_users: addToUsers
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    const message = action === 'approve' 
+                        ? `✅ Request berhasil disetujui!\n\n${addToUsers ? 'Anggota telah ditambahkan ke database warga.' : 'Status request berubah menjadi approved.'}`
+                        : `✅ Request berhasil ditolak!\n\nCatatan: ${catatan}`;
+                    alert(message);
+                    closeModal('detailRequestModal');
+                    loadRequests();
+                } else {
+                    alert(`❌ Gagal ${action}: ` + result.message);
+                }
+            } catch (error) {
+                console.error('Error processing request:', error);
+                alert('❌ Terjadi kesalahan: ' + error.message);
+            }
+        }
+
+        // Delete request
+        async function deleteRequestDirect(requestId) {
+            if (!confirm('Apakah Anda yakin ingin menghapus request ini?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`api/anggota_keluarga.php?action=delete&id=${requestId}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Request berhasil dihapus!');
+                    loadRequests();
+                } else {
+                    alert('❌ Gagal menghapus: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error deleting request:', error);
+                alert('❌ Terjadi kesalahan: ' + error.message);
+            }
+        }
+
+        // Delete all rejected requests
+        async function deleteAllRejected() {
+            const rejectedRequests = allRequests.filter(r => r.status === 'rejected');
+            
+            if (rejectedRequests.length === 0) {
+                alert('ℹ️ Tidak ada request yang ditolak untuk dihapus.');
+                return;
+            }
+
+            if (!confirm(`Apakah Anda yakin ingin menghapus ${rejectedRequests.length} request yang ditolak?`)) {
+                return;
+            }
+
+            try {
+                let deletedCount = 0;
+                
+                for (const req of rejectedRequests) {
+                    const response = await fetch(`api/anggota_keluarga.php?action=delete&id=${req.id}`, {
+                        method: 'DELETE'
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        deletedCount++;
+                    }
+                }
+
+                alert(`✅ Berhasil menghapus ${deletedCount} dari ${rejectedRequests.length} request yang ditolak.`);
+                loadRequests();
+            } catch (error) {
+                console.error('Error deleting rejected requests:', error);
+                alert('❌ Terjadi kesalahan: ' + error.message);
+            }
+        }
+
+        // Helper functions
+        function escapeHtml(text) {
+            if (!text) return '-';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatDateSimple(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID');
+        }
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                db.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUIForRole();
+            loadRequests();
+        });
+    </script>
+</body>
+</html>

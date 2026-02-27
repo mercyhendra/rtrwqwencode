@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kas & Iuran - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="warga.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Warga</span>
+                </a>
+                <a href="kk.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Kartu Keluarga</span>
+                </a>
+                <a href="requests.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">⏳</span>
+                    <span>Request Anggota</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Kas & Iuran</span>
+                </a>
+                <a href="kegiatan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📅</span>
+                    <span>Kegiatan</span>
+                </a>
+                <a href="laporan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📈</span>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Admin RT 001</div>
+                    <div class="sidebar-user-role">Administrator</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Kas & Iuran</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="notification-btn" onclick="window.location.href='notifikasi.html'">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Stats -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-card-icon green">💵</div>
+                        <div class="stat-card-content">
+                            <h3>Rp 2.500.000</h3>
+                            <p>Kas Bulan Ini</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon blue">📊</div>
+                        <div class="stat-card-content">
+                            <h3>Rp 25.000.000</h3>
+                            <p>Total Kas Tahun Ini</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon orange">⏳</div>
+                        <div class="stat-card-content">
+                            <h3>12</h3>
+                            <p>Belum Bayar</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon red">💸</div>
+                        <div class="stat-card-content">
+                            <h3>Rp 5.000.000</h3>
+                            <p>Pengeluaran Bulan Ini</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Iuran Table -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <select class="form-control" style="width: 150px;">
+                                <option value="">Semua Bulan</option>
+                                <option value="2025-02">Februari 2025</option>
+                                <option value="2025-01">Januari 2025</option>
+                                <option value="2024-12">Desember 2024</option>
+                            </select>
+                            <select class="form-control" style="width: 150px;">
+                                <option value="">Semua Status</option>
+                                <option value="lunas">Lunas</option>
+                                <option value="belum">Belum Bayar</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal('catatIuranModal')">➕ Catat Iuran</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Warga</th>
+                                <th>No. Rumah</th>
+                                <th>Jenis Iuran</th>
+                                <th>Nominal</th>
+                                <th>Bulan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">A</div>
+                                        <span>Ahmad Santoso</span>
+                                    </div>
+                                </td>
+                                <td>A-12</td>
+                                <td>Iuran Kebersihan</td>
+                                <td>Rp 50.000</td>
+                                <td>Februari 2025</td>
+                                <td><span class="badge badge-success">Lunas</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline">🧾 Kwitansi</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--secondary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">B</div>
+                                        <span>Budi Pratama</span>
+                                    </div>
+                                </td>
+                                <td>A-15</td>
+                                <td>Iuran Keamanan</td>
+                                <td>Rp 30.000</td>
+                                <td>Februari 2025</td>
+                                <td><span class="badge badge-success">Lunas</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline">🧾 Kwitansi</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">C</div>
+                                        <span>Citra Dewi</span>
+                                    </div>
+                                </td>
+                                <td>B-08</td>
+                                <td>Iuran Kebersihan</td>
+                                <td>Rp 50.000</td>
+                                <td>Februari 2025</td>
+                                <td><span class="badge badge-warning">Belum Bayar</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-primary" onclick="openModal('catatIuranModal')">💰 Bayar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 35px; height: 35px; background: var(--danger-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">D</div>
+                                        <span>Dedi Kurniawan</span>
+                                    </div>
+                                </td>
+                                <td>C-22</td>
+                                <td>Iuran Sampah</td>
+                                <td>Rp 25.000</td>
+                                <td>Februari 2025</td>
+                                <td><span class="badge badge-warning">Belum Bayar</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-primary" onclick="openModal('catatIuranModal')">💰 Bayar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Catat Iuran Modal -->
+    <div class="modal-overlay" id="catatIuranModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Catat Pembayaran Iuran</h3>
+                <button class="modal-close" onclick="closeModal('catatIuranModal')">&times;</button>
+            </div>
+            <form id="catatIuranForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Pilih Warga</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih Warga</option>
+                            <option value="1">Ahmad Santoso - A-12</option>
+                            <option value="2">Budi Pratama - A-15</option>
+                            <option value="3">Citra Dewi - B-08</option>
+                            <option value="4">Dedi Kurniawan - C-22</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jenis Iuran</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih Jenis Iuran</option>
+                            <option value="kebersihan">Iuran Kebersihan</option>
+                            <option value="keamanan">Iuran Keamanan</option>
+                            <option value="sampah">Iuran Sampah</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Bulan</label>
+                        <input type="month" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nominal (Rp)</label>
+                        <input type="number" class="form-control" placeholder="50000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Keterangan</label>
+                        <textarea class="form-control" rows="2" placeholder="Catatan tambahan (opsional)"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('catatIuranModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                auth.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

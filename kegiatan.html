@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kegiatan - VILLA BINTARO REGENCY RT/RW Digital</title>
+    <link rel="stylesheet" href="css/style-premium.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon">🏘️</div>
+                    <span>VILLA BINTARO REGENCY</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="warga.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Warga</span>
+                </a>
+                <a href="kk.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Kartu Keluarga</span>
+                </a>
+                <a href="requests.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">⏳</span>
+                    <span>Request Anggota</span>
+                </a>
+                <a href="pengumuman.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📢</span>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="notifikasi.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">🔔</span>
+                    <span>Notifikasi</span>
+                </a>
+                <a href="layanan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Layanan Surat</span>
+                </a>
+                <a href="iuran.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">💰</span>
+                    <span>Kas & Iuran</span>
+                </a>
+                <a href="kegiatan.html" class="sidebar-menu-item active">
+                    <span class="sidebar-menu-icon">📅</span>
+                    <span>Kegiatan</span>
+                </a>
+                <a href="laporan.html" class="sidebar-menu-item">
+                    <span class="sidebar-menu-icon">📈</span>
+                    <span>Laporan</span>
+                </a>
+            </nav>
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar">A</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name">Admin RT 001</div>
+                    <div class="sidebar-user-role">Administrator</div>
+                </div>
+                <button onclick="logout()" style="background: none; border: none; color: var(--gray-400); font-size: 1.25rem; cursor: pointer;" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 class="page-title">Kegiatan</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="notification-btn" onclick="window.location.href='notifikasi.html'">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Upcoming Events -->
+                <div style="margin-bottom: 32px;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 20px;">📅 Kegiatan Mendatang</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px;">
+                        <!-- Event Card 1 -->
+                        <div class="card">
+                            <div style="height: 150px; background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); display: flex; align-items: center; justify-content: center; font-size: 4rem;">🧹</div>
+                            <div class="card-body">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                    <h3 style="font-size: 1.2rem;">Kerja Bakti Bersih Selokan</h3>
+                                    <span class="badge badge-info">Umum</span>
+                                </div>
+                                <div style="display: flex; gap: 16px; margin-bottom: 16px; color: var(--gray-600); font-size: 0.9rem;">
+                                    <span>📅 18 Feb 2025</span>
+                                    <span>⏰ 07:00 WIB</span>
+                                </div>
+                                <p style="color: var(--gray-600); margin-bottom: 16px; font-size: 0.95rem;">
+                                    Kerja bakti membersihkan selokan di seluruh wilayah RT 001. Diharapkan kehadiran seluruh warga.
+                                </p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: var(--gray-500); font-size: 0.9rem;">👥 45 warga terdaftar</span>
+                                    <button class="btn btn-sm btn-primary">Daftar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Event Card 2 -->
+                        <div class="card">
+                            <div style="height: 150px; background: linear-gradient(135deg, var(--secondary-color), var(--secondary-color)); display: flex; align-items: center; justify-content: center; font-size: 4rem;">🤝</div>
+                            <div class="card-body">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                    <h3 style="font-size: 1.2rem;">Rapat Bulanan RT</h3>
+                                    <span class="badge badge-warning">Pengurus</span>
+                                </div>
+                                <div style="display: flex; gap: 16px; margin-bottom: 16px; color: var(--gray-600); font-size: 0.9rem;">
+                                    <span>📅 20 Feb 2025</span>
+                                    <span>⏰ 19:00 WIB</span>
+                                </div>
+                                <p style="color: var(--gray-600); margin-bottom: 16px; font-size: 0.95rem;">
+                                    Rapat bulanan membahas program kerja dan evaluasi kegiatan bulan ini.
+                                </p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: var(--gray-500); font-size: 0.9rem;">👥 12 warga terdaftar</span>
+                                    <button class="btn btn-sm btn-primary">Daftar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Event Card 3 -->
+                        <div class="card">
+                            <div style="height: 150px; background: linear-gradient(135deg, var(--accent-color), var(--accent-color)); display: flex; align-items: center; justify-content: center; font-size: 4rem;">💉</div>
+                            <div class="card-body">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                    <h3 style="font-size: 1.2rem;">Posyandu Balita & Lansia</h3>
+                                    <span class="badge badge-success">Kesehatan</span>
+                                </div>
+                                <div style="display: flex; gap: 16px; margin-bottom: 16px; color: var(--gray-600); font-size: 0.9rem;">
+                                    <span>📅 25 Feb 2025</span>
+                                    <span>⏰ 08:00 WIB</span>
+                                </div>
+                                <p style="color: var(--gray-600); margin-bottom: 16px; font-size: 0.95rem;">
+                                    Pelayanan posyandu rutin untuk balita dan lansia. Gratis!
+                                </p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: var(--gray-500); font-size: 0.9rem;">👥 30 warga terdaftar</span>
+                                    <button class="btn btn-sm btn-primary">Daftar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Past Events Table -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="card-title">Riwayat Kegiatan</h3>
+                        <button class="btn btn-primary" onclick="openModal('addKegiatanModal')">➕ Tambah Kegiatan</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Kegiatan</th>
+                                <th>Tanggal</th>
+                                <th>Peserta</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🎉</div>
+                                        <span>Perayaan 17 Agustus</span>
+                                    </div>
+                                </td>
+                                <td>17 Agu 2024</td>
+                                <td>120 warga</td>
+                                <td><span class="badge badge-success">Selesai</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline">📊 Laporan</button>
+                                    <button class="btn btn-sm btn-outline">📷 Galeri</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 40px; height: 40px; background: rgba(16, 185, 129, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🩸</div>
+                                        <span>Donor Darah</span>
+                                    </div>
+                                </td>
+                                <td>10 Jan 2025</td>
+                                <td>45 warga</td>
+                                <td><span class="badge badge-success">Selesai</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline">📊 Laporan</button>
+                                    <button class="btn btn-sm btn-outline">📷 Galeri</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 40px; height: 40px; background: rgba(245, 158, 11, 0.1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🎄</div>
+                                        <span>Bakti Sosial Natal</span>
+                                    </div>
+                                </td>
+                                <td>22 Des 2024</td>
+                                <td>60 warga</td>
+                                <td><span class="badge badge-success">Selesai</span></td>
+                                <td class="table-actions">
+                                    <button class="btn btn-sm btn-outline">📊 Laporan</button>
+                                    <button class="btn btn-sm btn-outline">📷 Galeri</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Kegiatan Modal -->
+    <div class="modal-overlay" id="addKegiatanModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Kegiatan Baru</h3>
+                <button class="modal-close" onclick="closeModal('addKegiatanModal')">&times;</button>
+            </div>
+            <form id="addKegiatanForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Nama Kegiatan</label>
+                        <input type="text" class="form-control" placeholder="Contoh: Kerja Bakti" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kategori</label>
+                        <select class="form-control" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="umum">Umum</option>
+                            <option value="kesehatan">Kesehatan</option>
+                            <option value="sosial">Sosial</option>
+                            <option value="olahraga">Olahraga</option>
+                            <option value="keagamaan">Keagamaan</option>
+                            <option value="pengurus">Pengurus</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tanggal & Waktu</label>
+                        <input type="datetime-local" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Lokasi</label>
+                        <input type="text" class="form-control" placeholder="Contoh: Balai Warga" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Deskripsi</label>
+                        <textarea class="form-control" rows="4" placeholder="Deskripsi kegiatan..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kuota Peserta</label>
+                        <input type="number" class="form-control" placeholder="Jumlah maksimal peserta">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('addKegiatanModal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Buat Kegiatan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                auth.logout();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
